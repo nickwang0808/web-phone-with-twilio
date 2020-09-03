@@ -1,6 +1,19 @@
 // this is for Voip setup, migrate back to main code when finished
 
 import React, { useState, useEffect } from "react";
+import {
+  Box,
+  Grid,
+  CssBaseline,
+  Button,
+  Container,
+  TextField,
+  ButtonGroup,
+} from "@material-ui/core";
+import TopBar from "./components/topbar";
+import NumberBox from "./components/numberBox";
+import CallButton from "./components/callButton";
+import { Height } from "@material-ui/icons";
 const { Device } = require("twilio-client");
 
 function App() {
@@ -12,7 +25,11 @@ function App() {
     setNumber(event.target.value);
   };
 
-  const connectCustomer = () => {
+  const handleHangUp = () => {
+    Device.disconnectAll();
+  };
+
+  const handleMakeCall = () => {
     const params = { number: number };
     Device.connect(params);
   };
@@ -25,28 +42,47 @@ function App() {
     console.log(response.token);
     Device.setup(response.token);
   };
+  // turn off init for now.
+  // useEffect(() => {
+  //   getToken();
+  //   Device.on("ready", () => {
+  //     console.log("device ready");
+  //     setDeviceReady(true);
+  //   });
+  // });
 
   useEffect(() => {
-    getToken();
-    Device.on("ready", () => {
-      console.log("device ready");
-      setDeviceReady(true);
-    });
-
     Device.on("error", (error) => console.log(error));
   });
 
   return (
-    <React.Fragment>
-      <div>
-        <button onClick={getToken}>Setup</button>
-        <h3>{deviceReady ? "Device Ready" : "Device not Ready"}</h3>
-        <input name="phoneNumber" onChange={updateNumber} value={number} />
-        <button onClick={connectCustomer}>Call</button>
-        <span>Call Status </span>
-        <span>{connection ? "calling" : "ready"}</span>
-      </div>
-    </React.Fragment>
+    <>
+      <CssBaseline />
+      <TopBar />
+      <Container>
+        <Box
+          height="90vh"
+          display="flex"
+          flexDirection="column"
+          justifyContent="space-between"
+        >
+          <div />
+
+          <NumberBox updateNumber={updateNumber} value={number} />
+
+          <Grid container direction="column" alignItems="center">
+            <Grid item xs>
+              <CallButton
+                handleHangUp={handleHangUp}
+                handleMakeCall={handleMakeCall}
+                connection={connection}
+                deviceReady={deviceReady}
+              />
+            </Grid>
+          </Grid>
+        </Box>
+      </Container>
+    </>
   );
 }
 
