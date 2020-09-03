@@ -13,15 +13,16 @@ import {
 import TopBar from "./components/topbar";
 import NumberBox from "./components/numberBox";
 import CallButton from "./components/callButton";
-import { Height } from "@material-ui/icons";
+import KeyPad from "./components/keypad";
 const { Device } = require("twilio-client");
 
 function App() {
   const [deviceReady, setDeviceReady] = useState(false);
   const [connection, setConnection] = useState(false);
   const [number, setNumber] = useState("");
+  const [incoming, setIncoming] = useState(false);
 
-  const updateNumber = (event) => {
+  const updateNumberToCall = (event) => {
     setNumber(event.target.value);
   };
 
@@ -49,7 +50,21 @@ function App() {
   //     console.log("device ready");
   //     setDeviceReady(true);
   //   });
-  // });
+  //  // do i need [] here?
+  // },[]);
+
+  useEffect(() => {
+    // I have no clue what I'm doing here. just wanna clean up some eventListeners
+    const handleAnswerCall = (conn) => {
+      setIncoming(true);
+      console.log(conn);
+    };
+    Device.on("incoming", (conn) => handleAnswerCall(conn));
+
+    return () => {
+      Device.removeListener("incoming", (conn) => handleAnswerCall(conn));
+    };
+  }, []);
 
   useEffect(() => {
     Device.on("error", (error) => console.log(error));
@@ -61,16 +76,19 @@ function App() {
       <TopBar />
       <Container>
         <Box
-          height="90vh"
+          height="85vh"
           display="flex"
           flexDirection="column"
           justifyContent="space-between"
+          // pt={10}
         >
-          <div />
+          <NumberBox updateNumber={updateNumberToCall} value={number} />
 
-          <NumberBox updateNumber={updateNumber} value={number} />
+          <Grid item container direction="column" alignItems="center">
+            <KeyPad />
+          </Grid>
 
-          <Grid container direction="column" alignItems="center">
+          <Grid item container direction="column" alignItems="center">
             <Grid item xs>
               <CallButton
                 handleHangUp={handleHangUp}
