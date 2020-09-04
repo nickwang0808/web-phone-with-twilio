@@ -5,6 +5,7 @@ import NumberBox from "./components/numberBox";
 import KeyPad from "./components/keypad";
 const { Device } = require("twilio-client");
 
+// keypad operation, seems simpler with useReducer
 function reducer(state, action) {
   switch (action.type) {
     case "add":
@@ -12,6 +13,9 @@ function reducer(state, action) {
 
     case "match":
       return { number: action.payload };
+
+    case "del":
+      return { number: state.number.slice(0, -1) };
 
     default:
       return state.number;
@@ -36,6 +40,7 @@ function App() {
     Device.connect(params);
   };
 
+  // don't delete this
   const getToken = async () => {
     const response = await fetch("http://localhost:3000/token/generate", {
       method: "POST",

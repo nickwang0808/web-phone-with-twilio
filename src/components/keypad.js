@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Grid, Box } from "@material-ui/core";
+import { Button, Grid, Box, IconButton } from "@material-ui/core";
 import { grey } from "@material-ui/core/colors";
 import CallButton from "./callButton";
 
@@ -55,8 +55,38 @@ function KeyPad({
       {keyValues.map((kv) => (
         <KeyColumn value={kv} dispatch={dispatch} key={kv[0]} />
       ))}
-      <Grid item xs>
-        <CallButton />
+
+      <Grid
+        item
+        xs={12}
+        container
+        direction="row"
+        justify="center"
+        alignItems="center"
+      >
+        <Grid item xs>
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <Button fullWidth size="large">
+              Show
+            </Button>
+          </Box>
+        </Grid>
+        <Grid item xs>
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <CallButton />
+          </Box>
+        </Grid>
+        <Grid item xs>
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <Button
+              onClick={() => dispatch({ type: "del" })}
+              fullWidth
+              size="large"
+            >
+              DEL
+            </Button>
+          </Box>
+        </Grid>
       </Grid>
     </Grid>
   );
