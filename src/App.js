@@ -92,25 +92,27 @@ function App() {
 
   if (!deviceReady) {
     return (
-      <CssBaseline />
-      <Box
-        height="100vh"
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-      >
-        {initError ? (
-          <Box textAlign="center">
-            <h4>Failed to connect to server</h4>
-          </Box>
-        ) : (
-          <Box textAlign="center">
-            <h4>Initializing Device, This could take a few sec</h4>
-            <CircularProgress />
-          </Box>
-        )}
-      </Box>
+      <>
+        <CssBaseline />
+        <Box
+          height="100vh"
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+        >
+          {initError ? (
+            <Box textAlign="center">
+              <h4>Failed to connect to server</h4>
+            </Box>
+          ) : (
+            <Box textAlign="center">
+              <h4>Initializing Device, This could take a few sec</h4>
+              <CircularProgress />
+            </Box>
+          )}
+        </Box>
+      </>
     );
   } else {
     return (
