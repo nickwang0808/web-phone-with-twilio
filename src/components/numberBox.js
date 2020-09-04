@@ -8,7 +8,7 @@ const useStyles = makeStyles({
   align: {
     textAlign: "center",
     fontSize: "32px",
-    borderBottom: "1px solid grey",
+    borderBottom: "2px solid #e6e6e6",
   },
 });
 

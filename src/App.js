@@ -11,6 +11,9 @@ import NumberBox from "./components/numberBox";
 import KeyPad from "./components/keypad";
 const { Device } = require("twilio-client");
 
+// when in DEVMODE no fetch call will be made
+const DEVMODE = true;
+
 // keypad operation, seems simpler with useReducer
 function reducer(state, action) {
   switch (action.type) {
@@ -73,11 +76,16 @@ function App() {
   }
 
   useEffect(() => {
-    getToken();
-    Device.on("ready", () => {
-      console.log("device ready");
+    // device init
+    if (DEVMODE) {
       setDeviceReady(true);
-    });
+    } else {
+      getToken();
+      Device.on("ready", () => {
+        console.log("device ready");
+        setDeviceReady(true);
+      });
+    }
 
     Device.on("error", (error) => {
       console.log("error log", error);
@@ -126,35 +134,32 @@ function App() {
         <CssBaseline />
         <Container maxWidth="xs">
           <Box
-            height="100vh"
+            height={window.innerHeight + "px" || "80vh"}
             display="flex"
             flexDirection="column"
             justifyContent="space-between"
-            py={6}
+            pb={4}
+            pt={2}
           >
-            <Box
-              display="flex"
-              flexGrow={1}
-              flexDirection="column"
-              justifyContent="space-between"
-            >
-              <NumberBox dispatch={dispatch} value={state.number} />
+            <NumberBox dispatch={dispatch} value={state.number} />
 
+            {DEVMODE && <p>Dev Mode</p>}
+            {error && (
               <Box textAlign="center">
                 <h3>{error}</h3>
               </Box>
+            )}
 
-              <Grid item container direction="column" alignItems="center">
-                <KeyPad
-                  handleHangUp={handleHangUp}
-                  handleMakeCall={handleMakeCall}
-                  connection={connection}
-                  setConnection={setConnection}
-                  deviceReady={deviceReady}
-                  dispatch={dispatch}
-                />
-              </Grid>
-            </Box>
+            <Grid item container direction="column" alignItems="center">
+              <KeyPad
+                handleHangUp={handleHangUp}
+                handleMakeCall={handleMakeCall}
+                connection={connection}
+                setConnection={setConnection}
+                deviceReady={deviceReady}
+                dispatch={dispatch}
+              />
+            </Grid>
           </Box>
         </Container>
       </>

@@ -4,11 +4,11 @@ import CallButton from "./callButton";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "80px",
-    fontSize: "32px",
+    height: "64px",
+    fontSize: "24px",
   },
   callBox: {
-    marginTop: theme.spacing(3),
+    marginTop: theme.spacing(2),
   },
 }));
 
