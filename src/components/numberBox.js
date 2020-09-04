@@ -1,32 +1,31 @@
 import React from "react";
-import { TextField, makeStyles } from "@material-ui/core";
-import { red } from "@material-ui/core/colors";
+import { makeStyles, InputBase, Box } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    borderWidth: "3px",
-    borderColor: theme.palette.primary.main,
-    // borderRadius: "px",
+const useStyles = makeStyles({
+  input: {
+    fontSize: "32px",
   },
-}));
+  align: {
+    textAlign: "center",
+    fontSize: "32px",
+    borderBottom: "1px solid grey",
+  },
+});
 
 function NumberBox({ dispatch, value }) {
   const classes = useStyles();
   return (
-    <>
-      <TextField
+    <Box mb={4}>
+      <InputBase
         name="phoneNumber"
         onChange={(event) =>
           dispatch({ type: "match", payload: event.target.value })
         }
         value={value}
         autoFocus
-        variant="outlined"
-        color="primary"
-        label="Number to Call"
-        InputProps={{ classes: { notchedOutline: classes.root } }}
+        inputProps={{ className: classes.align }}
       />
-    </>
+    </Box>
   );
 }
 

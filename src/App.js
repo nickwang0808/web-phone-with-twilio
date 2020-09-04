@@ -79,25 +79,32 @@ function App() {
   return (
     <>
       <CssBaseline />
-      <Container>
+      <Container maxWidth="xs">
         <Box
-          height="85vh"
+          height="100vh"
           display="flex"
           flexDirection="column"
           justifyContent="space-between"
-          // pt={10}
+          py={6}
         >
-          <NumberBox dispatch={dispatch} value={state.number} />
+          <Box
+            display="flex"
+            flexGrow={1}
+            flexDirection="column"
+            justifyContent="space-between"
+          >
+            <NumberBox dispatch={dispatch} value={state.number} />
 
-          <Grid item container direction="column" alignItems="center">
-            <KeyPad
-              handleHangUp={handleHangUp}
-              handleMakeCall={handleMakeCall}
-              connection={connection}
-              deviceReady={deviceReady}
-              dispatch={dispatch}
-            />
-          </Grid>
+            <Grid item container direction="column" alignItems="center">
+              <KeyPad
+                handleHangUp={handleHangUp}
+                handleMakeCall={handleMakeCall}
+                connection={connection}
+                deviceReady={deviceReady}
+                dispatch={dispatch}
+              />
+            </Grid>
+          </Box>
         </Box>
       </Container>
     </>

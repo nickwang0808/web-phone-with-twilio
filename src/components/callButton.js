@@ -1,7 +1,7 @@
 import React from "react";
 import { Phone } from "@material-ui/icons";
-import { IconButton, makeStyles, Box } from "@material-ui/core";
-import { grey, green } from "@material-ui/core/colors";
+import { IconButton, makeStyles } from "@material-ui/core";
+import { grey } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -1,9 +1,19 @@
 import React from "react";
-import { Button, Grid, Box, IconButton } from "@material-ui/core";
-import { grey } from "@material-ui/core/colors";
+import { Button, Grid, Box, makeStyles } from "@material-ui/core";
 import CallButton from "./callButton";
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    height: "80px",
+    fontSize: "32px",
+  },
+  callBox: {
+    marginTop: theme.spacing(3),
+  },
+}));
+
 function KeyColumn({ value, dispatch }) {
+  const classes = useStyles();
   return (
     <Grid
       item
@@ -17,6 +27,7 @@ function KeyColumn({ value, dispatch }) {
         <Grid item xs key={k}>
           <Box display="flex" justifyContent="center" alignItems="center">
             <Button
+              className={classes.root}
               fullWidth
               size="large"
               onClick={() => dispatch({ type: "add", payload: k })}
@@ -37,12 +48,15 @@ function KeyPad({
   deviceReady,
   dispatch,
 }) {
+  const classes = useStyles();
+
   const keyValues = [
     [1, 2, 3],
     [4, 5, 6],
     [7, 8, 9],
     ["*", 0, "#"],
   ];
+
   return (
     <Grid
       item
@@ -56,6 +70,7 @@ function KeyPad({
         <KeyColumn value={kv} dispatch={dispatch} key={kv[0]} />
       ))}
 
+      {/* keeping it like it is not gonna make it more clean */}
       <Grid
         item
         xs={12}
@@ -63,6 +78,7 @@ function KeyPad({
         direction="row"
         justify="center"
         alignItems="center"
+        className={classes.callBox}
       >
         <Grid item xs>
           <Box display="flex" justifyContent="center" alignItems="center">
