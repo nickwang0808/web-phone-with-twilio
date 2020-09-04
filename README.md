@@ -15,6 +15,6 @@
 - ~~build main UI~~
 - add keypad
   - ~~use reducer to make keys functional~~
-  - add ui
+  - ~~add ui~~
 - add Device init process
 - add incoming call notification

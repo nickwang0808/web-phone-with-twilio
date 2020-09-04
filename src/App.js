@@ -1,6 +1,12 @@
 import React, { useState, useEffect, useReducer } from "react";
 
-import { Box, Grid, CssBaseline, Container } from "@material-ui/core";
+import {
+  Box,
+  Grid,
+  CssBaseline,
+  Container,
+  CircularProgress,
+} from "@material-ui/core";
 import NumberBox from "./components/numberBox";
 import KeyPad from "./components/keypad";
 const { Device } = require("twilio-client");
@@ -46,19 +52,23 @@ function App() {
       method: "POST",
     }).then((body) => body.json());
 
-    console.log(response.token);
-    Device.setup(response.token);
+    if (response.token) {
+      // console.log(response.token);
+      console.log("token received");
+      Device.setup(response.token);
+    }
   };
-  // // turn off init for now.
-  // useEffect(() => {
-  //   getToken();
-  //   Device.on("ready", () => {
-  //     console.log("device ready");
-  //     setDeviceReady(true);
-  //   });
-  //  // do i need [] here?
-  // },[]);
+  // turn off init for now.
+  useEffect(() => {
+    getToken();
+    Device.on("ready", () => {
+      console.log("device ready");
+      setDeviceReady(true);
+    });
+    // do i need [] here?
+  }, []);
 
+  // listner for incoming calls
   useEffect(() => {
     // I have no clue what I'm doing here. just wanna clean up some eventListeners
     const handleAnswerCall = (conn) => {
@@ -73,42 +83,62 @@ function App() {
   }, []);
 
   useEffect(() => {
-    Device.on("error", (error) => console.log(error));
+    Device.on("error", (error) => {
+      console.log("error log", error);
+    });
   });
 
-  return (
-    <>
-      <CssBaseline />
-      <Container maxWidth="xs">
-        <Box
-          height="100vh"
-          display="flex"
-          flexDirection="column"
-          justifyContent="space-between"
-          py={6}
-        >
+  if (!deviceReady) {
+    return (
+      <Box
+        height="100vh"
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Box textAlign="center">
+          <h4>Initializing Device, This could take a few sec</h4>
+        </Box>
+
+        <CircularProgress />
+      </Box>
+    );
+  } else {
+    return (
+      <>
+        <CssBaseline />
+        <Container maxWidth="xs">
           <Box
+            height="100vh"
             display="flex"
-            flexGrow={1}
             flexDirection="column"
             justifyContent="space-between"
+            py={6}
           >
-            <NumberBox dispatch={dispatch} value={state.number} />
+            <Box
+              display="flex"
+              flexGrow={1}
+              flexDirection="column"
+              justifyContent="space-between"
+            >
+              <NumberBox dispatch={dispatch} value={state.number} />
 
-            <Grid item container direction="column" alignItems="center">
-              <KeyPad
-                handleHangUp={handleHangUp}
-                handleMakeCall={handleMakeCall}
-                connection={connection}
-                deviceReady={deviceReady}
-                dispatch={dispatch}
-              />
-            </Grid>
+              <Grid item container direction="column" alignItems="center">
+                <KeyPad
+                  handleHangUp={handleHangUp}
+                  handleMakeCall={handleMakeCall}
+                  connection={connection}
+                  deviceReady={deviceReady}
+                  dispatch={dispatch}
+                />
+              </Grid>
+            </Box>
           </Box>
-        </Box>
-      </Container>
-    </>
-  );
+        </Container>
+      </>
+    );
+  }
 }
 
 export default App;
