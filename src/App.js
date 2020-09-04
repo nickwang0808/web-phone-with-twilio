@@ -65,53 +65,34 @@ function App() {
       setInitError(true);
     }
   };
-  // turn off init for now.
+
   useEffect(() => {
     getToken();
     Device.on("ready", () => {
       console.log("device ready");
       setDeviceReady(true);
     });
-    // do i need [] here?
-  }, []);
 
-  // listener for incoming calls
-  useEffect(() => {
-    const handleAnswerCall = (conn) => {
-      setIncoming(true);
-      console.log(conn);
-    };
-    Device.on("incoming", (conn) => handleAnswerCall(conn));
-
-    // event listener clean up here
-    return () => {
-      Device.removeListener("incoming", (conn) => handleAnswerCall(conn));
-    };
-  }, []);
-
-  useEffect(() => {
-    Device.on("disconnect", () => setConnection(false));
-
-    return () => {
-      Device.removeListener("disconnect", () => setConnection(false));
-    };
-  }, []);
-
-  useEffect(() => {
     Device.on("error", (error) => {
       console.log("error log", error);
       setError(`An Error occurred, error code: ${error.code}`);
     });
 
+    Device.on("disconnect", () => setConnection(false));
+
+    Device.on("incoming", (conn) => {
+      setIncoming(true);
+      console.log(conn);
+    });
+
     return () => {
-      Device.removeListener("error", () => {
-        console.log("error listener unmounted");
-      });
+      Device.destroy();
     };
   }, []);
 
   if (!deviceReady) {
     return (
+      <CssBaseline />
       <Box
         height="100vh"
         display="flex"
