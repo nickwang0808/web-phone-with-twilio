@@ -53,7 +53,8 @@ function App() {
   // don't delete this
   const getToken = async () => {
     try {
-      const response = await fetch("http://localhost:3000/token/generate", {
+      const url = "http://localhost:3000/token/generate";
+      const response = await fetch(url, {
         method: "POST",
       }).then((body) => body.json());
 
@@ -65,6 +66,11 @@ function App() {
       setInitError(true);
     }
   };
+
+  // dummy function to shut react up
+  if (incoming) {
+    console.log(incoming);
+  }
 
   useEffect(() => {
     getToken();
