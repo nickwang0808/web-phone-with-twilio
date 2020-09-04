@@ -1,37 +1,38 @@
-// this is for Voip setup, migrate back to main code when finished
+import React, { useState, useEffect, useReducer } from "react";
 
-import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Grid,
-  CssBaseline,
-  Button,
-  Container,
-  TextField,
-  ButtonGroup,
-} from "@material-ui/core";
-import TopBar from "./components/topbar";
+import { Box, Grid, CssBaseline, Container } from "@material-ui/core";
 import NumberBox from "./components/numberBox";
-import CallButton from "./components/callButton";
 import KeyPad from "./components/keypad";
 const { Device } = require("twilio-client");
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "add":
+      return { number: state.number + action.payload };
+
+    case "match":
+      return { number: action.payload };
+
+    default:
+      return state.number;
+  }
+}
 
 function App() {
   const [deviceReady, setDeviceReady] = useState(false);
   const [connection, setConnection] = useState(false);
-  const [number, setNumber] = useState("");
   const [incoming, setIncoming] = useState(false);
 
-  const updateNumberToCall = (event) => {
-    setNumber(event.target.value);
-  };
+  const [state, dispatch] = useReducer(reducer, { number: "" });
 
   const handleHangUp = () => {
     Device.disconnectAll();
   };
 
   const handleMakeCall = () => {
-    const params = { number: number };
+    const params = { number: state.number };
+
+    // const params = { number: number };
     Device.connect(params);
   };
 
@@ -43,7 +44,7 @@ function App() {
     console.log(response.token);
     Device.setup(response.token);
   };
-  // turn off init for now.
+  // // turn off init for now.
   // useEffect(() => {
   //   getToken();
   //   Device.on("ready", () => {
@@ -73,7 +74,6 @@ function App() {
   return (
     <>
       <CssBaseline />
-      <TopBar />
       <Container>
         <Box
           height="85vh"
@@ -82,21 +82,16 @@ function App() {
           justifyContent="space-between"
           // pt={10}
         >
-          <NumberBox updateNumber={updateNumberToCall} value={number} />
+          <NumberBox dispatch={dispatch} value={state.number} />
 
           <Grid item container direction="column" alignItems="center">
-            <KeyPad />
-          </Grid>
-
-          <Grid item container direction="column" alignItems="center">
-            <Grid item xs>
-              <CallButton
-                handleHangUp={handleHangUp}
-                handleMakeCall={handleMakeCall}
-                connection={connection}
-                deviceReady={deviceReady}
-              />
-            </Grid>
+            <KeyPad
+              handleHangUp={handleHangUp}
+              handleMakeCall={handleMakeCall}
+              connection={connection}
+              deviceReady={deviceReady}
+              dispatch={dispatch}
+            />
           </Grid>
         </Box>
       </Container>

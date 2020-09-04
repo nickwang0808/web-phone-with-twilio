@@ -10,14 +10,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function NumberBox({ updateNumber, value }) {
+function NumberBox({ dispatch, value }) {
   const classes = useStyles();
   return (
     <>
       <TextField
         name="phoneNumber"
-        onChange={updateNumber}
+        onChange={(event) =>
+          dispatch({ type: "match", payload: event.target.value })
+        }
         value={value}
+        autoFocus
         variant="outlined"
         color="primary"
         label="Number to Call"
