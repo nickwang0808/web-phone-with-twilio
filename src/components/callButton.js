@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function CallButton({ handleMakeCall, handleHangUp, deviceReady, connection }) {
+function CallButton({ handleMakeCall, handleHangUp, connection }) {
   const classes = useStyles();
 
   return (

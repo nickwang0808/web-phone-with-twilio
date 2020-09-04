@@ -13,8 +13,11 @@
 
 - ~~add hung up button~~
 - ~~build main UI~~
-- add keypad
+- ~~add keypad~~
   - ~~use reducer to make keys functional~~
   - ~~add ui~~
-- add Device init process
+- ~~add Device init process~~
+- ~~cleaned up error handler~~
+- add number validation
 - add incoming call notification
+- add fetch retry during init process

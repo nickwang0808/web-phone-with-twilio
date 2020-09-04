@@ -45,7 +45,7 @@ function KeyPad({
   handleHangUp,
   handleMakeCall,
   connection,
-  deviceReady,
+  setConnection,
   dispatch,
 }) {
   const classes = useStyles();
@@ -83,15 +83,21 @@ function KeyPad({
         <Grid item xs>
           <Box display="flex" justifyContent="center" alignItems="center">
             <Button fullWidth size="large">
-              Show
+              {/* Show */}
             </Button>
           </Box>
         </Grid>
+
         <Grid item xs>
           <Box display="flex" justifyContent="center" alignItems="center">
-            <CallButton />
+            <CallButton
+              handleHangUp={handleHangUp}
+              handleMakeCall={handleMakeCall}
+              connection={connection}
+            />
           </Box>
         </Grid>
+
         <Grid item xs>
           <Box display="flex" justifyContent="center" alignItems="center">
             <Button

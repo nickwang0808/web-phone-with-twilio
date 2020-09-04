@@ -30,13 +30,16 @@ function reducer(state, action) {
 
 function App() {
   const [deviceReady, setDeviceReady] = useState(false);
+  const [initError, setInitError] = useState(false);
+  const [error, setError] = useState(null);
   const [connection, setConnection] = useState(false);
   const [incoming, setIncoming] = useState(false);
 
-  const [state, dispatch] = useReducer(reducer, { number: "" });
+  const [state, dispatch] = useReducer(reducer, { number: "+" });
 
   const handleHangUp = () => {
     Device.disconnectAll();
+    setConnection(false);
   };
 
   const handleMakeCall = () => {
@@ -44,18 +47,22 @@ function App() {
 
     // const params = { number: number };
     Device.connect(params);
+    setConnection(true);
   };
 
   // don't delete this
   const getToken = async () => {
-    const response = await fetch("http://localhost:3000/token/generate", {
-      method: "POST",
-    }).then((body) => body.json());
+    try {
+      const response = await fetch("http://localhost:3000/token/generate", {
+        method: "POST",
+      }).then((body) => body.json());
 
-    if (response.token) {
       // console.log(response.token);
       console.log("token received");
       Device.setup(response.token);
+    } catch (err) {
+      console.log(err);
+      setInitError(true);
     }
   };
   // turn off init for now.
@@ -68,25 +75,40 @@ function App() {
     // do i need [] here?
   }, []);
 
-  // listner for incoming calls
+  // listener for incoming calls
   useEffect(() => {
-    // I have no clue what I'm doing here. just wanna clean up some eventListeners
     const handleAnswerCall = (conn) => {
       setIncoming(true);
       console.log(conn);
     };
     Device.on("incoming", (conn) => handleAnswerCall(conn));
 
+    // event listener clean up here
     return () => {
       Device.removeListener("incoming", (conn) => handleAnswerCall(conn));
     };
   }, []);
 
   useEffect(() => {
+    Device.on("disconnect", () => setConnection(false));
+
+    return () => {
+      Device.removeListener("disconnect", () => setConnection(false));
+    };
+  }, []);
+
+  useEffect(() => {
     Device.on("error", (error) => {
       console.log("error log", error);
+      setError(`An Error occurred, error code: ${error.code}`);
     });
-  });
+
+    return () => {
+      Device.removeListener("error", () => {
+        console.log("error listener unmounted");
+      });
+    };
+  }, []);
 
   if (!deviceReady) {
     return (
@@ -97,11 +119,16 @@ function App() {
         justifyContent="center"
         alignItems="center"
       >
-        <Box textAlign="center">
-          <h4>Initializing Device, This could take a few sec</h4>
-        </Box>
-
-        <CircularProgress />
+        {initError ? (
+          <Box textAlign="center">
+            <h4>Failed to connect to server</h4>
+          </Box>
+        ) : (
+          <Box textAlign="center">
+            <h4>Initializing Device, This could take a few sec</h4>
+            <CircularProgress />
+          </Box>
+        )}
       </Box>
     );
   } else {
@@ -124,11 +151,16 @@ function App() {
             >
               <NumberBox dispatch={dispatch} value={state.number} />
 
+              <Box textAlign="center">
+                <h3>{error}</h3>
+              </Box>
+
               <Grid item container direction="column" alignItems="center">
                 <KeyPad
                   handleHangUp={handleHangUp}
                   handleMakeCall={handleMakeCall}
                   connection={connection}
+                  setConnection={setConnection}
                   deviceReady={deviceReady}
                   dispatch={dispatch}
                 />
