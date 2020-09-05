@@ -10,6 +10,9 @@ var usersRouter = require("./routes/users");
 const call = require("./routes/call");
 const token = require("./routes/token");
 
+const dotenv = require("dotenv");
+dotenv.config();
+
 var app = express();
 
 // view engine setup
@@ -38,6 +41,9 @@ app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
+
+  // add this line to print stack trace of 500 err
+  if (app.get("env") === "development") console.log(err.stack);
 
   // render the error page
   res.status(err.status || 500);

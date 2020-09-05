@@ -3,19 +3,17 @@ const router = express.Router();
 const AccessToken = require("twilio").jwt.AccessToken;
 const VoiceGrant = AccessToken.VoiceGrant;
 
-const accoundSid = "AC280fce702e8b475c7cda4592701bb7fa";
-const apiKey = "SK6f824f245301cc3ef12c681de4130757";
-const apiSecret = "I5TZkCyE9s3g6EqhSFMgpvROMddl0RtM";
-const appSid = "APcc85c0402cde7a5d491f088920fc765c";
+const dotenv = require("dotenv");
+dotenv.config();
 
 router.post("/generate", (req, res) => {
   // Used when generating any kind of tokens
-  const twilioAccountSid = accoundSid;
-  const twilioApiKey = apiKey;
-  const twilioApiSecret = apiSecret;
+  const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
+  const twilioApiKey = process.env.API_KEY;
+  const twilioApiSecret = process.env.API_SECRET;
 
   // Used specifically for creating Voice tokens
-  const outgoingApplicationSid = appSid;
+  const outgoingApplicationSid = process.env.TWILIO_APP_SID;
   const identity = "user";
 
   // Create a "grant" which enables a client to use Voice as a given user
@@ -35,6 +33,7 @@ router.post("/generate", (req, res) => {
   // Serialize the token to a JWT string
   // console.log(token.toJwt());
   console.log(token);
+  console.log(twilioApiKey);
   res.append("Content-Type", "application/json");
   res.json({
     identity: identity,
