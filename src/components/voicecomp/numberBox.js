@@ -22,6 +22,7 @@ function NumberBox({ dispatch, value }) {
           dispatch({ type: "match", payload: event.target.value })
         }
         value={value}
+        fullWidth={true}
         autoFocus
         inputProps={{ className: classes.align }}
       />

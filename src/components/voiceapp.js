@@ -124,36 +124,34 @@ function VoiceApp() {
     );
   } else {
     return (
-      <>
-        <Box
-          flexGrow="1"
-          display="flex"
-          flexDirection="column"
-          justifyContent="space-between"
-          pb={2}
-          pt={2}
-        >
-          <NumberBox dispatch={dispatch} value={state.number} />
+      <Box
+        flexGrow="1"
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-between"
+        pb={3}
+        pt={2}
+      >
+        <NumberBox dispatch={dispatch} value={state.number} />
 
-          {DEVMODE && <p>Dev Mode</p>}
-          {error && (
-            <Box textAlign="center">
-              <h3>{error}</h3>
-            </Box>
-          )}
+        {DEVMODE && <p>Dev Mode</p>}
+        {error && (
+          <Box textAlign="center">
+            <h3>{error}</h3>
+          </Box>
+        )}
 
-          <Grid item container direction="column" alignItems="center">
-            <KeyPad
-              handleHangUp={handleHangUp}
-              handleMakeCall={handleMakeCall}
-              connection={connection}
-              setConnection={setConnection}
-              deviceReady={deviceReady}
-              dispatch={dispatch}
-            />
-          </Grid>
-        </Box>
-      </>
+        <Grid item container direction="column" alignItems="center">
+          <KeyPad
+            handleHangUp={handleHangUp}
+            handleMakeCall={handleMakeCall}
+            connection={connection}
+            setConnection={setConnection}
+            deviceReady={deviceReady}
+            dispatch={dispatch}
+          />
+        </Grid>
+      </Box>
     );
   }
 }

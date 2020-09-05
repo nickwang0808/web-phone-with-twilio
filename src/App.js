@@ -5,19 +5,39 @@ import {
   BottomNavigationAction,
   Box,
   Container,
+  AppBar,
+  makeStyles,
 } from "@material-ui/core";
 import RestoreIcon from "@material-ui/icons/Restore";
 import VoiceApp from "./components/voiceapp";
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundColor: "#e6e6e6",
+  },
+  appbar: {
+    top: "auto",
+    bottom: "0",
+    maxWidth: "396px",
+    // these 3 did the trick to center the app bar
+    left: "0",
+    right: "0",
+    margin: "0px auto",
+    // ^
+  },
+}));
+
 export default function App() {
+  const classes = useStyles();
   return (
     <>
-      <Container>
+      <Container maxWidth="xs">
         <Box
           height={window.innerHeight + "px"}
           display="flex"
           flexDirection="column"
           justifyContent="space-between"
+          pb={7}
         >
           <Router>
             <Switch>
@@ -31,23 +51,25 @@ export default function App() {
                 <Dash />
               </Route>
             </Switch>
-            <BottomNavigation showLabels>
-              <BottomNavigationAction
-                component={Link}
-                to="/"
-                icon={<RestoreIcon />}
-              />
-              <BottomNavigationAction
-                component={Link}
-                to="/about"
-                icon={<RestoreIcon />}
-              />
-              <BottomNavigationAction
-                component={Link}
-                to="/dash"
-                icon={<RestoreIcon />}
-              />
-            </BottomNavigation>
+            <AppBar className={classes.appbar}>
+              <BottomNavigation className={classes.root}>
+                <BottomNavigationAction
+                  component={Link}
+                  to="/"
+                  icon={<RestoreIcon />}
+                />
+                <BottomNavigationAction
+                  component={Link}
+                  to="/about"
+                  icon={<RestoreIcon />}
+                />
+                <BottomNavigationAction
+                  component={Link}
+                  to="/dash"
+                  icon={<RestoreIcon />}
+                />
+              </BottomNavigation>
+            </AppBar>
           </Router>
         </Box>
       </Container>
