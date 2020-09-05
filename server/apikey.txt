@@ -1,0 +1,10 @@
+test key 1
+
+SID
+SK6f824f245301cc3ef12c681de4130757
+
+KEY TYPE
+Standard
+
+SECRET
+I5TZkCyE9s3g6EqhSFMgpvROMddl0RtM
