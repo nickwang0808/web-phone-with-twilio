@@ -6,7 +6,7 @@ import KeyPad from "./voicecomp/keypad";
 const { Device } = require("twilio-client");
 
 // when in DEVMODE no fetch call will be made
-const DEVMODE = true;
+const DEVMODE = false;
 
 // keypad operation, seems simpler with useReducer
 function reducer(state, action) {

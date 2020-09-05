@@ -9,6 +9,15 @@
 - Any phone number you want
 - Completely Web based, use anywhere, any device
 
+## User Guide
+
+### Server
+
+- this app require a server to communicate with twilio platform.
+- put all you keys and secrets in a .env file
+- run `npm start` in server dir to spin up the server, then `ngrok http 3000` to get external links for the server
+- update twilio twiml app in the console with the external link you took.
+
 ## TODO:
 
 - ~~add hung up button~~
