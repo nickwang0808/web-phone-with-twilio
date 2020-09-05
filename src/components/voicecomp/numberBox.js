@@ -15,7 +15,7 @@ const useStyles = makeStyles({
 function NumberBox({ dispatch, value }) {
   const classes = useStyles();
   return (
-    <Box mb={4}>
+    <Box>
       <InputBase
         name="phoneNumber"
         onChange={(event) =>

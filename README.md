@@ -18,6 +18,7 @@
   - ~~add ui~~
 - ~~add Device init process~~
 - ~~cleaned up error handler~~
+- add react router for texting
 - add number validation
 - add incoming call notification
 - add fetch retry during init process

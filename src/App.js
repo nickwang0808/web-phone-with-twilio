@@ -1,170 +1,76 @@
-import React, { useState, useEffect, useReducer } from "react";
-
+import React from "react";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import {
+  BottomNavigation,
+  BottomNavigationAction,
   Box,
-  Grid,
-  CssBaseline,
   Container,
-  CircularProgress,
 } from "@material-ui/core";
-import NumberBox from "./components/numberBox";
-import KeyPad from "./components/keypad";
-const { Device } = require("twilio-client");
+import RestoreIcon from "@material-ui/icons/Restore";
+import VoiceApp from "./components/voiceapp";
 
-// when in DEVMODE no fetch call will be made
-const DEVMODE = true;
-
-// keypad operation, seems simpler with useReducer
-function reducer(state, action) {
-  switch (action.type) {
-    case "add":
-      return { number: state.number + action.payload };
-
-    case "match":
-      return { number: action.payload };
-
-    case "del":
-      return { number: state.number.slice(0, -1) };
-
-    default:
-      return state.number;
-  }
-}
-
-function App() {
-  const [deviceReady, setDeviceReady] = useState(false);
-  const [initError, setInitError] = useState(false);
-  const [error, setError] = useState(null);
-  const [connection, setConnection] = useState(false);
-  const [incoming, setIncoming] = useState(false);
-
-  const [state, dispatch] = useReducer(reducer, { number: "+" });
-
-  const handleHangUp = () => {
-    Device.disconnectAll();
-    setConnection(false);
-  };
-
-  const handleMakeCall = () => {
-    const params = { number: state.number };
-
-    // const params = { number: number };
-    Device.connect(params);
-    setConnection(true);
-  };
-
-  // don't delete this
-  const getToken = async () => {
-    try {
-      const url = "http://localhost:3000/token/generate";
-      const response = await fetch(url, {
-        method: "POST",
-      }).then((body) => body.json());
-
-      // console.log(response.token);
-      console.log("token received");
-      Device.setup(response.token);
-    } catch (err) {
-      console.log(err);
-      setInitError(true);
-    }
-  };
-
-  // dummy function to shut react up
-  if (incoming) {
-    console.log(incoming);
-  }
-
-  useEffect(() => {
-    // device init
-    if (DEVMODE) {
-      setDeviceReady(true);
-    } else {
-      getToken();
-      Device.on("ready", () => {
-        console.log("device ready");
-        setDeviceReady(true);
-      });
-    }
-
-    Device.on("error", (error) => {
-      console.log("error log", error);
-      setError(`An Error occurred, error code: ${error.code}`);
-    });
-
-    Device.on("disconnect", () => setConnection(false));
-
-    Device.on("incoming", (conn) => {
-      setIncoming(true);
-      console.log(conn);
-    });
-
-    return () => {
-      Device.destroy();
-    };
-  }, []);
-
-  if (!deviceReady) {
-    return (
-      <>
-        <CssBaseline />
+export default function App() {
+  return (
+    <>
+      <Container>
         <Box
-          height="100vh"
+          height={window.innerHeight + "px"}
           display="flex"
           flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
+          justifyContent="space-between"
         >
-          {initError ? (
-            <Box textAlign="center">
-              <h4>Failed to connect to server</h4>
-            </Box>
-          ) : (
-            <Box textAlign="center">
-              <h4>Initializing Device, This could take a few sec</h4>
-              <CircularProgress />
-            </Box>
-          )}
-        </Box>
-      </>
-    );
-  } else {
-    return (
-      <>
-        <CssBaseline />
-        <Container maxWidth="xs">
-          <Box
-            height={window.innerHeight + "px" || "80vh"}
-            display="flex"
-            flexDirection="column"
-            justifyContent="space-between"
-            pb={4}
-            pt={2}
-          >
-            <NumberBox dispatch={dispatch} value={state.number} />
-
-            {DEVMODE && <p>Dev Mode</p>}
-            {error && (
-              <Box textAlign="center">
-                <h3>{error}</h3>
-              </Box>
-            )}
-
-            <Grid item container direction="column" alignItems="center">
-              <KeyPad
-                handleHangUp={handleHangUp}
-                handleMakeCall={handleMakeCall}
-                connection={connection}
-                setConnection={setConnection}
-                deviceReady={deviceReady}
-                dispatch={dispatch}
+          <Router>
+            <Switch>
+              <Route exact path="/">
+                <VoiceApp />
+              </Route>
+              <Route exact path="/about">
+                <About />
+              </Route>
+              <Route exact path="/dash">
+                <Dash />
+              </Route>
+            </Switch>
+            <BottomNavigation showLabels>
+              <BottomNavigationAction
+                component={Link}
+                to="/"
+                icon={<RestoreIcon />}
               />
-            </Grid>
-          </Box>
-        </Container>
-      </>
-    );
-  }
+              <BottomNavigationAction
+                component={Link}
+                to="/about"
+                icon={<RestoreIcon />}
+              />
+              <BottomNavigationAction
+                component={Link}
+                to="/dash"
+                icon={<RestoreIcon />}
+              />
+            </BottomNavigation>
+          </Router>
+        </Box>
+      </Container>
+    </>
+  );
 }
 
-export default App;
+// function App() {
+//   return <div>something</div>;
+// }
+
+function About() {
+  return (
+    <div>
+      <h2>About</h2>
+    </div>
+  );
+}
+
+function Dash() {
+  return (
+    <div>
+      <h2>Dash</h2>
+    </div>
+  );
+}
