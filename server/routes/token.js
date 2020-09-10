@@ -31,17 +31,13 @@ router.post("/generate", (req, res) => {
   token = token.toJwt();
 
   // Serialize the token to a JWT string
-  // console.log(token.toJwt());
-  console.log(token);
-  console.log(twilioApiKey);
+  // console.log(token);
+  token && console.log("-----token sent-----");
   res.append("Content-Type", "application/json");
   res.json({
     identity: identity,
     token: token,
   });
 });
-
-// router.post("/generate", (req, res) => {
-// });
 
 module.exports = router;
