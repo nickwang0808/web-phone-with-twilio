@@ -4,11 +4,13 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const cors = require("cors");
+const db = require("./config");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 const call = require("./routes/call");
 const token = require("./routes/token");
+const message = require("./routes/message");
 
 const dotenv = require("dotenv");
 dotenv.config();
@@ -30,6 +32,7 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/call", call);
 app.use("/token", token);
+app.use("/message", message);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
