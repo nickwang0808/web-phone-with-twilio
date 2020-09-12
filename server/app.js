@@ -15,6 +15,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 var app = express();
+app.use(cors());
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -26,7 +27,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use(cors({ origin: true, credentials: true }));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/call", call);
