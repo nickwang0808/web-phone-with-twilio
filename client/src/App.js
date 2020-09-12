@@ -44,7 +44,7 @@ export default function App() {
               <Route exact path="/">
                 <VoiceApp />
               </Route>
-              <Route exact path="/about">
+              <Route exact path="/text">
                 <About />
               </Route>
               <Route exact path="/dash">
