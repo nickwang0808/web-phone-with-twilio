@@ -50,6 +50,7 @@ function VoiceApp() {
   // don't delete this
   const getToken = async () => {
     try {
+      // const url = "http://localhost:3000/token/generate";
       const url = "http://35.220.218.52:3000/token/generate";
       const response = await fetch(url, {
         method: "POST",
