@@ -9,5 +9,5 @@ admin.initializeApp({
 const db = admin.firestore();
 const timeStamp = admin.firestore.FieldValue.serverTimestamp;
 
-module.exports = db;
+module.exports.db = db;
 module.exports.timeStamp = timeStamp;
