@@ -9,6 +9,7 @@ import {
 import { Send } from "@material-ui/icons";
 import { db } from "../firebase/config";
 import FromBar from "./smscomp/fromBar";
+import useFireStore from "./hooks/useFirestore";
 
 const useStyles = makeStyles((theme) => ({
   messageBox: {
@@ -41,9 +42,7 @@ function Message({ body, incoming }) {
   );
 }
 
-export default function SmsApp() {
-  const [messages, setMessages] = useState([]);
-  const [from, setFrom] = useState("");
+export default function SmsDetail() {
   const [input, setInput] = useState("");
   // eslint-disable-next-line
   const [myNum, setMyNum] = useState("+16046708235"); // just for now,use server to provide this in teh future
@@ -51,18 +50,9 @@ export default function SmsApp() {
   const [sentStatus, setSentStatus] = useState(false);
   const bottomRef = useRef(null);
 
-  useEffect(() => {
-    db.collection("messages")
-      .doc("+8618612441878")
-      .onSnapshot((doc) => {
-        setMessages(doc.data().message);
-        setFrom(doc.data().from);
-        console.log(doc.data().message);
-      });
-  }, [setMessages, setFrom]);
+  const { messages, from } = useFireStore("messages");
 
   useEffect(() => {
-    console.log("scroll");
     bottomRef.current.scrollIntoView();
   }, [messages]);
 

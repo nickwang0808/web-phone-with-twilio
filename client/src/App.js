@@ -11,7 +11,7 @@ import {
 import RestoreIcon from "@material-ui/icons/Restore";
 // eslint-disable-next-line
 import VoiceApp from "./components/voiceapp";
-import SmsApp from "./components/smsapp";
+import SmsApp from "./components/smsApp";
 
 const useStyles = makeStyles((theme) => ({
   root: {
