@@ -8,6 +8,7 @@ import {
 } from "@material-ui/core";
 import { Send } from "@material-ui/icons";
 import { db } from "../firebase/config";
+import FromBar from "./smscomp/fromBar";
 
 const useStyles = makeStyles((theme) => ({
   messageBox: {
@@ -44,7 +45,9 @@ export default function SmsApp() {
   const [messages, setMessages] = useState([]);
   const [from, setFrom] = useState("");
   const [input, setInput] = useState("");
+  // eslint-disable-next-line
   const [myNum, setMyNum] = useState("+16046708235"); // just for now,use server to provide this in teh future
+  // eslint-disable-next-line
   const [sentStatus, setSentStatus] = useState(false);
   const bottomRef = useRef(null);
 
@@ -86,21 +89,21 @@ export default function SmsApp() {
 
   return (
     <>
-      <Box height="150px">{`From: ${from}`}</Box>
+      <FromBar from={from} />
       <Box
         flexGrow="1"
         display="flex"
         flexDirection="column"
-        justifyContent="start"
+        justifyContent="end"
         bgcolor="#ffffff"
-        pb={3}
-        pt={2}
+        pb={1}
+        p={2}
         overflow="auto"
       >
         {messages.map((data) => (
           <Message
-            key={data.messageContent}
-            body={data.messageContent}
+            key={data.timeStamp}
+            body={data.messageBody}
             incoming={data.incoming}
           />
         ))}
@@ -113,7 +116,7 @@ export default function SmsApp() {
           fullWidth
           onChange={(c) => setInput(c.target.value)}
         />
-        <IconButton onClick={handleSendMessage}>
+        <IconButton onClick={handleSendMessage} disabled={input ? false : true}>
           <Send />
         </IconButton>
       </Box>

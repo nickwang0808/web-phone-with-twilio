@@ -33,7 +33,7 @@ export default function App() {
   const classes = useStyles();
   return (
     <>
-      <Container maxWidth="xs">
+      <Container maxWidth="xs" disableGutters>
         <Box
           height={window.innerHeight + "px"}
           display="flex"
