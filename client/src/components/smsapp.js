@@ -46,6 +46,9 @@ function Message({ body, incoming }) {
 export default function SmsApp() {
   const [messages, setMessages] = useState([]);
   const [from, setFrom] = useState("");
+  const [input, setInput] = useState("");
+  const [myNum, setMyNum] = useState("+16046708235"); // just for now,use server to provide this in teh future
+  const [sentStatus, setSentStatus] = useState(false);
   const bottomRef = useRef(null);
 
   useEffect(() => {
@@ -62,6 +65,23 @@ export default function SmsApp() {
     console.log("scroll");
     bottomRef.current.scrollIntoView();
   }, [messages]);
+
+  const handleSendMessage = async () => {
+    try {
+      const url = "http://35.220.218.52:3000/message/send";
+      const response = await fetch(url, {
+        method: "post",
+        body: {
+          Body: input,
+          From: myNum,
+          To: from,
+        },
+      });
+      response === 200 ? setSentStatus(true) : setSentStatus(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <>
@@ -83,39 +103,16 @@ export default function SmsApp() {
             incoming={data.incoming}
           />
         ))}
-        {messages.map((data) => (
-          <Message
-            key={data.messageContent}
-            body={data.messageContent}
-            incoming={data.incoming}
-          />
-        ))}
-        {messages.map((data) => (
-          <Message
-            key={data.messageContent}
-            body={data.messageContent}
-            incoming={data.incoming}
-          />
-        ))}
-        {messages.map((data) => (
-          <Message
-            key={data.messageContent}
-            body={data.messageContent}
-            incoming={data.incoming}
-          />
-        ))}
-        {messages.map((data) => (
-          <Message
-            key={data.messageContent}
-            body={data.messageContent}
-            incoming={data.incoming}
-          />
-        ))}
         <div ref={bottomRef} />
       </Box>
-      <Box py={1} display="flex">
-        <TextField variant="outlined" fullWidth="true" />
-        <IconButton>
+      <Box display="flex" flexDirection="row" alignItems="center">
+        <TextField
+          size="small"
+          variant="outlined"
+          fullWidth
+          onChange={(c) => setInput(c.target.value)}
+        />
+        <IconButton onClick={handleSendMessage}>
           <Send />
         </IconButton>
       </Box>

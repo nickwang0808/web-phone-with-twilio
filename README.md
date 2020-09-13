@@ -29,7 +29,6 @@
 - ~~cleaned up error handler~~
 - ~~add react router~~
 - add texting
-  -
 - add number validation
 - add incoming call notification
 - add fetch retry during init process
