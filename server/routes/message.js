@@ -17,7 +17,7 @@ async function addMessageToDB(db, content, isIncoming) {
         From: content.body.From,
         To: content.body.To,
         messageBody: content.body.Body,
-        timeStamp: timeStamp(),
+        timeStamp: new Date(),
       }),
     });
   } catch (err) {
