@@ -26,7 +26,7 @@ async function addMessageToDB(db, content, isIncoming, doc) {
 
 router.post("/sms", (req, res) => {
   addMessageToDB(db, req, true, req.body.From);
-  console.log(req);
+  console.log(req.body);
   res.sendStatus(200);
 });
 
