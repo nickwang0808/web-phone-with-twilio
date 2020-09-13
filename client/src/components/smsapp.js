@@ -35,10 +35,7 @@ function Message({ body, incoming }) {
       py={1}
     >
       {/* <Paper className={classes.messageBox}>{body}</Paper> */}
-      <Paper className={classes.messageBox}>
-        {body}
-        adawdawdawdawdawdwawdadawdawdawdawdawdwawdadawdawdawdawdawdwa
-      </Paper>
+      <Paper className={classes.messageBox}>{body}</Paper>
     </Box>
   );
 }

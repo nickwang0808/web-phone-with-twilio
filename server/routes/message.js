@@ -36,7 +36,7 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require("twilio")(accountSid, authToken);
 
 // clean this up a bit to mimic the twilio http req
-router.post("send", (req, res) => {
+router.post("/send", (req, res) => {
   client.messages
     .create({
       body: req.body.Body,
