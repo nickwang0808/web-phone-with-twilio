@@ -7,9 +7,9 @@ dotenv.config();
 
 const router = express.Router();
 
-async function addMessageToDB(db, content, isIncoming) {
+async function addMessageToDB(db, content, isIncoming, doc) {
   try {
-    const docRef = db.collection("messages").doc(content.body.From);
+    const docRef = db.collection("messages").doc(doc);
     await docRef.update({
       message: arrayUnion({
         incoming: isIncoming,
@@ -25,7 +25,7 @@ async function addMessageToDB(db, content, isIncoming) {
 }
 
 router.post("/sms", (req, res) => {
-  addMessageToDB(db, req, true);
+  addMessageToDB(db, req, true, req.body.From);
   console.log(req.body.Body);
   res.sendStatus(200);
 });
@@ -45,7 +45,7 @@ router.post("/send", (req, res) => {
       })
       .then((message) => {
         console.log(message.sid);
-        addMessageToDB(db, req, false);
+        addMessageToDB(db, req, false, req.body.To);
       })
       .then(res.sendStatus(200))
       .catch((err) => console.log(err));
