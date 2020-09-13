@@ -22,6 +22,7 @@ async function addMessageToDB(db, content, isIncoming, docID) {
       });
     } else {
       await doc.ref.set({
+        from: content.body.From,
         message: [
           {
             incoming: isIncoming,

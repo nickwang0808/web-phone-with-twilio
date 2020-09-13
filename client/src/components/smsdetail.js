@@ -9,7 +9,7 @@ import {
 import { Send } from "@material-ui/icons";
 import { db } from "../firebase/config";
 import FromBar from "./smscomp/fromBar";
-import useFireStore from "./hooks/useFirestore";
+import { useFireStoreOneDoc } from "./hooks/useFirestore";
 
 const useStyles = makeStyles((theme) => ({
   messageBox: {
@@ -50,7 +50,7 @@ export default function SmsDetail() {
   const [sentStatus, setSentStatus] = useState(false);
   const bottomRef = useRef(null);
 
-  const { messages, from } = useFireStore("messages");
+  const { messages, from } = useFireStoreOneDoc("messages", "+8618612441878");
 
   useEffect(() => {
     bottomRef.current.scrollIntoView();
