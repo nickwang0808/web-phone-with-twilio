@@ -13,9 +13,10 @@ async function addMessageToDB(db, content, isIncoming, docID) {
     if (doc && doc.exists) {
       await doc.ref.update({
         message: arrayUnion({
+          // make a class object out of this vvvvv
           incoming: isIncoming,
-          From: content.body.From,
-          To: content.body.To,
+          from: content.body.From,
+          to: content.body.To,
           messageBody: content.body.Body,
           timeStamp: new Date(),
         }),
@@ -25,9 +26,10 @@ async function addMessageToDB(db, content, isIncoming, docID) {
         from: content.body.From,
         message: [
           {
+            // convert this to class
             incoming: isIncoming,
-            From: content.body.From,
-            To: content.body.To,
+            from: content.body.From,
+            to: content.body.To,
             messageBody: content.body.Body,
             timeStamp: new Date(),
           },
