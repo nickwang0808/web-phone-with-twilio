@@ -7,18 +7,32 @@ dotenv.config();
 
 const router = express.Router();
 
-async function addMessageToDB(db, content, isIncoming, doc) {
+async function addMessageToDB(db, content, isIncoming, docID) {
   try {
-    const docRef = db.collection("messages").doc(doc);
-    await docRef.update({
-      message: arrayUnion({
-        incoming: isIncoming,
-        From: content.body.From,
-        To: content.body.To,
-        messageBody: content.body.Body,
-        timeStamp: new Date(),
-      }),
-    });
+    const doc = await db.collection("messages").doc(docID).get();
+    if (doc && doc.exists) {
+      await doc.ref.update({
+        message: arrayUnion({
+          incoming: isIncoming,
+          From: content.body.From,
+          To: content.body.To,
+          messageBody: content.body.Body,
+          timeStamp: new Date(),
+        }),
+      });
+    } else {
+      await doc.ref.set({
+        message: [
+          {
+            incoming: isIncoming,
+            From: content.body.From,
+            To: content.body.To,
+            messageBody: content.body.Body,
+            timeStamp: new Date(),
+          },
+        ],
+      });
+    }
   } catch (err) {
     console.log(err);
   }
