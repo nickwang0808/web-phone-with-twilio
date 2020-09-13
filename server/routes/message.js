@@ -1,6 +1,5 @@
 const express = require("express");
 const db = require("../config").db;
-const timeStamp = require("../config").timeStamp;
 const arrayUnion = require("../config").arrayUnion;
 
 const dotenv = require("dotenv");
@@ -46,7 +45,7 @@ router.post("/send", (req, res) => {
       })
       .then((message) => {
         console.log(message.sid);
-        addMessageToDB(req, db, false);
+        addMessageToDB(db, req, false);
       })
       .then(res.sendStatus(200))
       .catch((err) => console.log(err));
