@@ -9,7 +9,9 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import RestoreIcon from "@material-ui/icons/Restore";
+// eslint-disable-next-line
 import VoiceApp from "./components/voiceapp";
+import SmsApp from "./components/smsapp";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,7 +33,7 @@ export default function App() {
   const classes = useStyles();
   return (
     <>
-      <Container maxWidth="xs">
+      <Container maxWidth="xs" disableGutters>
         <Box
           height={window.innerHeight + "px"}
           display="flex"
@@ -44,8 +46,8 @@ export default function App() {
               <Route exact path="/">
                 <VoiceApp />
               </Route>
-              <Route exact path="/about">
-                <About />
+              <Route exact path="/text">
+                <SmsApp />
               </Route>
               <Route exact path="/dash">
                 <Dash />
@@ -60,7 +62,7 @@ export default function App() {
                 />
                 <BottomNavigationAction
                   component={Link}
-                  to="/about"
+                  to="/text"
                   icon={<RestoreIcon />}
                 />
                 <BottomNavigationAction
@@ -74,18 +76,6 @@ export default function App() {
         </Box>
       </Container>
     </>
-  );
-}
-
-// function App() {
-//   return <div>something</div>;
-// }
-
-function About() {
-  return (
-    <div>
-      <h2>About</h2>
-    </div>
   );
 }
 

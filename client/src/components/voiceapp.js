@@ -6,7 +6,7 @@ import KeyPad from "./voicecomp/keypad";
 const { Device } = require("twilio-client");
 
 // when in DEVMODE no fetch call will be made
-const DEVMODE = false;
+const DEVMODE = true;
 
 // keypad operation, seems simpler with useReducer
 function reducer(state, action) {
@@ -50,7 +50,8 @@ function VoiceApp() {
   // don't delete this
   const getToken = async () => {
     try {
-      const url = "http://localhost:3000/token/generate";
+      // const url = "http://localhost:3000/token/generate";
+      const url = "http://35.220.218.52:3000/token/generate";
       const response = await fetch(url, {
         method: "POST",
       }).then((body) => body.json());

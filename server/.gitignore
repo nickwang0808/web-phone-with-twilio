@@ -142,4 +142,5 @@ dist
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,linux,node
 
 # Custom rules (everything added below won't be overriden by 'Generate .gitignore File' if you use 'Update' option)
-
+server/autodialer-285913-0d8eb486fa4d.json
+server/autodialer-285913-firebase-adminsdk-vk2kb-a26ac625f7.json
