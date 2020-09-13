@@ -8,6 +8,8 @@ admin.initializeApp({
 
 const db = admin.firestore();
 const timeStamp = admin.firestore.FieldValue.serverTimestamp;
+const arrayUnion = admin.firestore.FieldValue.arrayUnion;
 
 module.exports.db = db;
 module.exports.timeStamp = timeStamp;
+module.exports.arrayUnion = arrayUnion;
