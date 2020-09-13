@@ -66,13 +66,17 @@ export default function SmsApp() {
   const handleSendMessage = async () => {
     try {
       const url = "http://35.220.218.52:3000/message/send";
+      const data = {
+        Body: input,
+        From: myNum,
+        To: from,
+      };
       const response = await fetch(url, {
         method: "post",
-        body: {
-          Body: input,
-          From: myNum,
-          To: from,
+        headers: {
+          "Content-Type": "application/json",
         },
+        body: JSON.stringify(data),
       });
       response === 200 ? setSentStatus(true) : setSentStatus(false);
     } catch (err) {
