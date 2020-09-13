@@ -37,18 +37,24 @@ const client = require("twilio")(accountSid, authToken);
 
 // clean this up a bit to mimic the twilio http req
 router.post("/send", (req, res) => {
-  client.messages
-    .create({
-      body: req.body.Body,
-      from: req.body.From,
-      to: req.body.To,
-    })
-    .then((message) => {
-      console.log(message.sid);
-      addMessageToDB(req, db, false);
-    })
-    .then(res.sendStatus(200))
-    .catch((err) => console.log(err));
+  // client.messages
+  //   .create({
+  //     body: req.body.Body,
+  //     from: req.body.From,
+  //     to: req.body.To,
+  //   })
+  //   .then((message) => {
+  //     console.log(message.sid);
+  //     addMessageToDB(req, db, false);
+  //   })
+  //   .then(res.sendStatus(200))
+  //   .catch((err) => console.log(err));
+
+  console.log({
+    body: req.body.Body,
+    from: req.body.From,
+    to: req.body.To,
+  });
 });
 
 module.exports = router;
