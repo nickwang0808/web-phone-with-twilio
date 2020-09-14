@@ -7,7 +7,6 @@ import {
   IconButton,
 } from "@material-ui/core";
 import { Send } from "@material-ui/icons";
-import { db } from "../firebase/config";
 import FromBar from "./smscomp/fromBar";
 import { useFireStoreOneDoc } from "./hooks/useFirestore";
 

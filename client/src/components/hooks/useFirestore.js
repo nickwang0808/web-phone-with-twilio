@@ -12,18 +12,17 @@ export function useFireStoreOneDoc(collection, docID) {
       .onSnapshot((doc) => {
         setMessages(doc.data().message);
         setFrom(doc.data().from);
-        console.log(doc.data().message);
+        // console.log(doc.data().message);
       });
 
     return () => unsub();
-  }, [collection]);
+  }, [collection, docID]);
 
   return { messages, from };
 }
 
 export function useFireStoreAllDocs(collection) {
   const [messages, setMessages] = useState([]);
-  const [from, setFrom] = useState("");
 
   useEffect(() => {
     // get a list of docs
@@ -35,12 +34,13 @@ export function useFireStoreAllDocs(collection) {
           ...doc.data().message[doc.data().message.length - 1], // get last elem
         };
         previewData.push(data);
-        console.log(data);
       });
+      setMessages(previewData);
+      console.log(previewData);
     });
 
     return () => unsub();
   }, [collection]);
 
-  return { messages, from };
+  return { messages };
 }
