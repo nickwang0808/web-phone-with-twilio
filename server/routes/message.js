@@ -16,7 +16,7 @@ async function addMessageToDB(db, content, isIncoming, docID) {
           // make a class object out of this vvvvv
           incoming: isIncoming,
           From: content.body.From,
-          Fo: content.body.To,
+          To: content.body.To,
           messageBody: content.body.Body,
           timeStamp: new Date(),
         }),
