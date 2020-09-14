@@ -7,13 +7,18 @@ dotenv.config();
 
 const router = express.Router();
 
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = require("twilio")(accountSid, authToken);
+
 class messageDetail {
-  constructor(incoming, From, To, messageBody) {
+  constructor(incoming, From, To, messageBody, isRead) {
     this.incoming = incoming;
     this.From = From;
     this.To = To;
     this.messageBody = messageBody;
     this.timeStamp = new Date();
+    this.isRead = incoming ? false : true;
   }
 }
 
@@ -32,6 +37,7 @@ async function addMessageToDB(db, content, isIncoming, docID) {
         ),
       });
     } else {
+      // if doc does NOT exist, create one
       await doc.ref.set({
         from: content.body.From,
         message: [
@@ -55,10 +61,6 @@ router.post("/sms", (req, res) => {
   res.sendStatus(200);
 });
 
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-const client = require("twilio")(accountSid, authToken);
-
 // clean this up a bit to mimic the twilio http req
 router.post("/send", (req, res) => {
   try {
@@ -78,7 +80,7 @@ router.post("/send", (req, res) => {
     console.log({
       err: err,
       req: {
-        header: req.eader,
+        header: req.header,
         body: req.body,
       },
     });
