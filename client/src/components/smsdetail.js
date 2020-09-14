@@ -18,11 +18,11 @@ const useStyles = makeStyles((theme) => ({
     wordWrap: "break-word",
     borderRadius: "10px",
   },
-  sent: {
+  notIncoming: {
     backgroundColor: theme.palette.primary.main,
     color: "white",
   },
-  received: {
+  incoming: {
     backgroundColor: grey[200],
   },
 }));
@@ -40,7 +40,7 @@ function Message({ body, incoming }) {
     >
       <Paper
         className={`${classes.messageBox} ${
-          incoming ? classes.received : classes.sent
+          incoming ? classes.incoming : classes.notIncoming
         }`}
       >
         {body}
@@ -52,8 +52,7 @@ function Message({ body, incoming }) {
 // ==============================================================
 export default function SmsDetail({ numToView, setNumToView }) {
   const [input, setInput] = useState("");
-  // eslint-disable-next-line
-  const [myNum, setMyNum] = useState("+16046708235"); // just for now,use server to provide this in teh future
+  const myNum = "+16046708235";
   // eslint-disable-next-line
   const [sentStatus, setSentStatus] = useState(false);
   const bottomRef = useRef(null);

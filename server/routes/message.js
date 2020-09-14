@@ -7,32 +7,40 @@ dotenv.config();
 
 const router = express.Router();
 
+class messageDetail {
+  constructor(incoming, From, To, messageBody) {
+    this.incoming = incoming;
+    this.From = From;
+    this.To = To;
+    this.messageBody = messageBody;
+    this.timeStamp = new Date();
+  }
+}
+
 async function addMessageToDB(db, content, isIncoming, docID) {
   try {
     const doc = await db.collection("messages").doc(docID).get();
     if (doc && doc.exists) {
       await doc.ref.update({
-        message: arrayUnion({
-          // make a class object out of this vvvvv
-          incoming: isIncoming,
-          From: content.body.From,
-          To: content.body.To,
-          messageBody: content.body.Body,
-          timeStamp: new Date(),
-        }),
+        message: arrayUnion(
+          new messageDetail(
+            isIncoming,
+            content.body.From,
+            content.body.To,
+            content.body.Body
+          )
+        ),
       });
     } else {
       await doc.ref.set({
         from: content.body.From,
         message: [
-          {
-            // convert this to class
-            incoming: isIncoming,
-            From: content.body.From,
-            To: content.body.To,
-            messageBody: content.body.Body,
-            timeStamp: new Date(),
-          },
+          new messageDetail(
+            isIncoming,
+            content.body.From,
+            content.body.To,
+            content.body.Body
+          ),
         ],
       });
     }
