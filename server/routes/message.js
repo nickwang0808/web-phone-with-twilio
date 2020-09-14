@@ -22,7 +22,7 @@ function messageDetail(incoming, From, To, messageBody) {
 }
 
 async function addMessageToDB(db, content, isIncoming, docID) {
-  const messageDetail = messageDetail(
+  const messageDetailObj = messageDetail(
     isIncoming,
     content.body.From,
     content.body.To,
@@ -32,13 +32,13 @@ async function addMessageToDB(db, content, isIncoming, docID) {
     const doc = await db.collection("messages").doc(docID).get();
     if (doc && doc.exists) {
       await doc.ref.update({
-        message: arrayUnion(messageDetail),
+        message: arrayUnion(messageDetailObj),
       });
     } else {
       // if doc does NOT exist, create one
       await doc.ref.set({
         from: content.body.From,
-        message: [messageDetail],
+        message: [messageDetailObj],
       });
     }
   } catch (err) {
