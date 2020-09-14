@@ -34,5 +34,3 @@
 - add fetch retry during init process
 
 #### Notes:
-
-so I need to turn every sms preview to a link, and assign them to the smsdetail with a param to the from number

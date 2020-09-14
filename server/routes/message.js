@@ -56,9 +56,9 @@ router.post("/send", (req, res) => {
   try {
     client.messages
       .create({
-        body: req.body.Body,
-        from: req.body.From,
-        to: req.body.To,
+        body: req.body.body,
+        from: req.body.from,
+        to: req.body.to,
       })
       .then((message) => {
         console.log(message.sid);
@@ -67,7 +67,13 @@ router.post("/send", (req, res) => {
       .then(res.sendStatus(200))
       .catch((err) => console.log(err));
   } catch (err) {
-    console.log({ err: err, req: req });
+    console.log({
+      err: err,
+      req: {
+        header: req.header,
+        body: req.body,
+      },
+    });
   }
 });
 

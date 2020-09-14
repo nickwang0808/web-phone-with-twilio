@@ -13,10 +13,7 @@ import { useFireStoreOneDoc } from "./hooks/useFirestore";
 const useStyles = makeStyles((theme) => ({
   messageBox: {
     maxWidth: "200px",
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
+    padding: theme.spacing(2),
     wordWrap: "break-word",
     backgroundColor: theme.palette.primary.main,
     color: "white",
@@ -33,9 +30,8 @@ function Message({ body, incoming }) {
       justifyContent={incoming ? "flex-start" : "flex-end"}
       flexWrap="wrap"
       whiteSpace="normal"
-      py={1}
+      pb={1}
     >
-      {/* <Paper className={classes.messageBox}>{body}</Paper> */}
       <Paper className={classes.messageBox}>{body}</Paper>
     </Box>
   );

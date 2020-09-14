@@ -9,7 +9,6 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import RestoreIcon from "@material-ui/icons/Restore";
-// eslint-disable-next-line
 import VoiceApp from "./components/voiceapp";
 import SmsApp from "./components/smsApp";
 
@@ -20,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   appbar: {
     top: "auto",
     bottom: "0",
-    maxWidth: "396px",
+    maxWidth: "480px",
     // these 3 did the trick to center the app bar
     left: "0",
     right: "0",
