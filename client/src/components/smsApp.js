@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 // eslint-disable-next-line
 import SmsDetail from "./smsdetail";
 import { Box, Grid, makeStyles } from "@material-ui/core";
@@ -10,18 +10,16 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import ImageIcon from "@material-ui/icons/Image";
-import WorkIcon from "@material-ui/icons/Work";
-import BeachAccessIcon from "@material-ui/icons/BeachAccess";
 import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles((theme) => ({
   root: "1px",
 }));
 
-function SmsPreview({ from, content, time }) {
+function SmsPreview({ from, content, time, onClick }) {
   return (
     <>
-      <ListItem>
+      <ListItem onClick={onClick}>
         <ListItemAvatar>
           <Avatar>
             <ImageIcon />
@@ -37,26 +35,34 @@ function SmsPreview({ from, content, time }) {
 
 export default function SmsApp() {
   const { messages } = useFireStoreAllDocs("messages");
+  const [numToView, setNumToView] = useState(null);
 
-  return (
-    <Box pl={1}>
-      <List>
-        {messages.map((message) => {
-          let [
-            day,
-            month,
-            year,
-          ] = message.timeStamp.toDate().toLocaleDateString().split("/");
-          return (
-            <SmsPreview
-              key={message.timeStamp}
-              time={{ day, month, year }}
-              from={message.from}
-              content={message.messageBody}
-            />
-          );
-        })}
-      </List>
-    </Box>
-  );
+  if (!numToView) {
+    return (
+      <>
+        <Box pl={1}>
+          <List>
+            {messages.map((message) => {
+              let [
+                day,
+                month,
+                year,
+              ] = message.timeStamp.toDate().toLocaleDateString().split("/");
+              return (
+                <SmsPreview
+                  onClick={() => setNumToView(message.from)}
+                  time={{ day, month, year }}
+                  key={message.timeStamp}
+                  from={message.from}
+                  content={message.messageBody}
+                />
+              );
+            })}
+          </List>
+        </Box>
+      </>
+    );
+  } else if (numToView) {
+    return <SmsDetail numToView={numToView} setNumToView={setNumToView} />;
+  }
 }

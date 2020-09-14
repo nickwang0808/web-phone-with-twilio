@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { db } from "../../firebase/config";
 
+//========================================================
 export function useFireStoreOneDoc(collection, docID) {
   const [messages, setMessages] = useState([]);
-  const [from, setFrom] = useState("");
 
   useEffect(() => {
     const unsub = db
@@ -11,16 +11,16 @@ export function useFireStoreOneDoc(collection, docID) {
       .doc(docID)
       .onSnapshot((doc) => {
         setMessages(doc.data().message);
-        setFrom(doc.data().from);
-        // console.log(doc.data().message);
+        console.log(doc.data().message);
       });
 
     return () => unsub();
   }, [collection, docID]);
 
-  return { messages, from };
+  return { messages };
 }
 
+// =========================================================
 export function useFireStoreAllDocs(collection) {
   const [messages, setMessages] = useState([]);
 
@@ -36,7 +36,7 @@ export function useFireStoreAllDocs(collection) {
         previewData.push(data);
       });
       setMessages(previewData);
-      console.log(previewData);
+      // console.log(previewData);
     });
 
     return () => unsub();

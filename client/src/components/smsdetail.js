@@ -41,7 +41,8 @@ function Message({ body, incoming }) {
   );
 }
 
-export default function SmsDetail() {
+// ==============================================================
+export default function SmsDetail({ numToView, setNumToView }) {
   const [input, setInput] = useState("");
   // eslint-disable-next-line
   const [myNum, setMyNum] = useState("+16046708235"); // just for now,use server to provide this in teh future
@@ -49,7 +50,7 @@ export default function SmsDetail() {
   const [sentStatus, setSentStatus] = useState(false);
   const bottomRef = useRef(null);
 
-  const { messages, from } = useFireStoreOneDoc("messages", "+8618612441878");
+  const { messages } = useFireStoreOneDoc("messages", numToView);
 
   useEffect(() => {
     bottomRef.current.scrollIntoView();
@@ -61,7 +62,7 @@ export default function SmsDetail() {
       const data = {
         body: input,
         from: myNum,
-        to: from,
+        to: numToView,
       };
       const response = await fetch(url, {
         method: "post",
@@ -78,7 +79,7 @@ export default function SmsDetail() {
 
   return (
     <>
-      <FromBar from={from} />
+      <FromBar from={numToView} setNumToView={setNumToView} />
       <Box
         flexGrow="1"
         display="flex"
