@@ -56,9 +56,9 @@ export default function SmsDetail({ numToView, setNumToView }) {
     try {
       const url = "http://35.220.218.52:3000/message/send";
       const data = {
-        body: input,
-        from: myNum,
-        to: numToView,
+        Body: input,
+        From: myNum,
+        To: numToView,
       };
       const response = await fetch(url, {
         method: "post",

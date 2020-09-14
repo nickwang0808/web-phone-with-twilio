@@ -56,9 +56,9 @@ router.post("/send", (req, res) => {
   try {
     client.messages
       .create({
-        body: req.body.body,
-        from: req.body.from,
-        to: req.body.to,
+        body: req.body.Body,
+        from: req.body.From,
+        to: req.body.To,
       })
       .then((message) => {
         console.log(message.sid);
@@ -70,7 +70,7 @@ router.post("/send", (req, res) => {
     console.log({
       err: err,
       req: {
-        header: req.header,
+        header: req.eader,
         body: req.body,
       },
     });
