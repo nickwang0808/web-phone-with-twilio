@@ -22,31 +22,23 @@ function messageDetail(incoming, From, To, messageBody) {
 }
 
 async function addMessageToDB(db, content, isIncoming, docID) {
+  const messageDetail = messageDetail(
+    isIncoming,
+    content.body.From,
+    content.body.To,
+    content.body.Body
+  );
   try {
     const doc = await db.collection("messages").doc(docID).get();
     if (doc && doc.exists) {
       await doc.ref.update({
-        message: arrayUnion(
-          new messageDetail(
-            isIncoming,
-            content.body.From,
-            content.body.To,
-            content.body.Body
-          )
-        ),
+        message: arrayUnion(messageDetail),
       });
     } else {
       // if doc does NOT exist, create one
       await doc.ref.set({
         from: content.body.From,
-        message: [
-          new messageDetail(
-            isIncoming,
-            content.body.From,
-            content.body.To,
-            content.body.Body
-          ),
-        ],
+        message: [messageDetail],
       });
     }
   } catch (err) {
