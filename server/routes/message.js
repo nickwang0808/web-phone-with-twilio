@@ -11,23 +11,15 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require("twilio")(accountSid, authToken);
 
-function messageDetail(incoming, From, To, messageBody) {
-  const obj = {};
-  obj.incoming = incoming;
-  obj.From = From;
-  obj.To = To;
-  obj.messageBody = messageBody;
-  obj.timeStamp = new Date();
-  obj.isRead = incoming ? false : true;
-}
-
 async function addMessageToDB(db, content, isIncoming, docID) {
-  const messageDetailObj = messageDetail(
-    isIncoming,
-    content.body.From,
-    content.body.To,
-    content.body.Body
-  );
+  const messageDetailObj = {
+    incoming: isIncoming,
+    From: content.body.From,
+    To: content.body.To,
+    messageBody: content.body.messageBody,
+    timeStamp: new Date(),
+    isRead: incoming ? false : true,
+  };
   try {
     const doc = await db.collection("messages").doc(docID).get();
     if (doc && doc.exists) {
