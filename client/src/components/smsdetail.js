@@ -9,20 +9,26 @@ import {
 import { Send } from "@material-ui/icons";
 import FromBar from "./smscomp/fromBar";
 import { useFireStoreOneDoc } from "./hooks/useFirestore";
+import { grey } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   messageBox: {
-    maxWidth: "200px",
+    maxWidth: "65vw",
     padding: theme.spacing(2),
     wordWrap: "break-word",
+    borderRadius: "10px",
+  },
+  sent: {
     backgroundColor: theme.palette.primary.main,
     color: "white",
-    borderRadius: "10px",
+  },
+  received: {
+    backgroundColor: grey[200],
   },
 }));
 
 function Message({ body, incoming }) {
-  const classes = useStyles();
+  const classes = useStyles(incoming);
 
   return (
     <Box
@@ -32,7 +38,13 @@ function Message({ body, incoming }) {
       whiteSpace="normal"
       pb={1}
     >
-      <Paper className={classes.messageBox}>{body}</Paper>
+      <Paper
+        className={`${classes.messageBox} ${
+          incoming ? classes.received : classes.sent
+        }`}
+      >
+        {body}
+      </Paper>
     </Box>
   );
 }
@@ -68,6 +80,7 @@ export default function SmsDetail({ numToView, setNumToView }) {
         body: JSON.stringify(data),
       });
       response === 200 ? setSentStatus(true) : setSentStatus(false);
+      setInput("");
     } catch (err) {
       console.log(err);
     }

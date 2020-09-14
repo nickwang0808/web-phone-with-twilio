@@ -11,7 +11,7 @@ export function useFireStoreOneDoc(collection, docID) {
       .doc(docID)
       .onSnapshot((doc) => {
         setMessages(doc.data().message);
-        console.log(doc.data().message);
+        // console.log(doc.data().message);
       });
 
     return () => unsub();
@@ -36,7 +36,7 @@ export function useFireStoreAllDocs(collection) {
         previewData.push(data);
       });
       setMessages(previewData);
-      // console.log(previewData);
+      console.log(previewData);
     });
 
     return () => unsub();
