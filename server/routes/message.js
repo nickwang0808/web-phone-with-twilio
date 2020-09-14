@@ -18,7 +18,7 @@ async function addMessageToDB(db, content, isIncoming, docID) {
     To: content.body.To,
     messageBody: content.body.messageBody,
     timeStamp: new Date(),
-    isRead: incoming ? false : true,
+    isRead: isIncoming ? false : true,
   };
   try {
     const doc = await db.collection("messages").doc(docID).get();
