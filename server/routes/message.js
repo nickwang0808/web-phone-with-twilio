@@ -15,8 +15,8 @@ async function addMessageToDB(db, content, isIncoming, docID) {
         message: arrayUnion({
           // make a class object out of this vvvvv
           incoming: isIncoming,
-          from: content.body.From,
-          to: content.body.To,
+          From: content.body.From,
+          Fo: content.body.To,
           messageBody: content.body.Body,
           timeStamp: new Date(),
         }),
@@ -28,8 +28,8 @@ async function addMessageToDB(db, content, isIncoming, docID) {
           {
             // convert this to class
             incoming: isIncoming,
-            from: content.body.From,
-            to: content.body.To,
+            From: content.body.From,
+            To: content.body.To,
             messageBody: content.body.Body,
             timeStamp: new Date(),
           },
