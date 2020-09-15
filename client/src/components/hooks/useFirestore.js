@@ -4,6 +4,7 @@ import { db } from "../../firebase/config";
 //========================================================
 export function useFireStoreOneDoc(collection, docID) {
   const [messages, setMessages] = useState([]);
+  const [isRead, setIsRead] = useState();
 
   useEffect(() => {
     const unsub = db
@@ -11,13 +12,14 @@ export function useFireStoreOneDoc(collection, docID) {
       .doc(docID)
       .onSnapshot((doc) => {
         setMessages(doc.data().message);
-        // console.log(doc.data().message);
+        setIsRead(doc.data().isRead);
+        // console.log(doc.data().isRead);
       });
 
     return () => unsub();
   }, [collection, docID]);
 
-  return { messages };
+  return { messages, isRead };
 }
 
 // =========================================================
@@ -31,16 +33,35 @@ export function useFireStoreAllDocs(collection) {
       snap.forEach((doc) => {
         let data = {
           from: doc.data().from,
+          isRead: doc.data().isRead,
           ...doc.data().message[doc.data().message.length - 1], // get last elem
         };
         previewData.push(data);
       });
+
+      function sort(a, b) {
+        return b.timeStamp.toDate() - a.timeStamp.toDate();
+      }
+      previewData.sort(sort);
+
       setMessages(previewData);
-      console.log(previewData);
+      // console.log(previewData);
     });
 
     return () => unsub();
   }, [collection]);
 
   return { messages };
+}
+
+export function FireStoreUpdateReadStatus(collection, docID) {
+  // update the provided message
+  const docRef = db.collection(collection).doc(docID);
+
+  return docRef
+    .update({
+      isRead: true,
+    })
+    .then(() => console.log("message read!"))
+    .catch((err) => console.log(err));
 }

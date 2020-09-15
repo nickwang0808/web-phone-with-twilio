@@ -34,3 +34,5 @@
 - add fetch retry during init process
 
 #### Notes:
+
+    now get new message notification working, sort preview array by date, notification by a dot on the preview page

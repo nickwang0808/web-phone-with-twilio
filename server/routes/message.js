@@ -18,18 +18,19 @@ async function addMessageToDB(db, content, isIncoming, docID) {
     To: content.body.To,
     messageBody: content.body.messageBody,
     timeStamp: new Date(),
-    isRead: isIncoming ? false : true,
   };
   try {
     const doc = await db.collection("messages").doc(docID).get();
     if (doc && doc.exists) {
       await doc.ref.update({
+        isRead: isIncoming ? false : true,
         message: arrayUnion(messageDetailObj),
       });
     } else {
       // if doc does NOT exist, create one
       await doc.ref.set({
         from: content.body.From,
+        isRead: isIncoming ? false : true,
         message: [messageDetailObj],
       });
     }
