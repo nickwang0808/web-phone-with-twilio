@@ -8,12 +8,11 @@ import {
   AppBar,
   makeStyles,
 } from "@material-ui/core";
-import RestoreIcon from "@material-ui/icons/Restore";
 import VoiceApp from "./components/voiceapp";
 import SmsApp from "./components/smsApp";
-import { Phone, Chat, Settings } from "@material-ui/icons";
+import { Phone, Chat } from "@material-ui/icons";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   root: {
     backgroundColor: "#e6e6e6",
   },
@@ -27,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "0px auto",
     // ^
   },
-}));
+});
 
 export default function App() {
   const classes = useStyles();
@@ -49,9 +48,6 @@ export default function App() {
               <Route exact path="/text">
                 <SmsApp />
               </Route>
-              <Route exact path="/dash">
-                <Dash />
-              </Route>
             </Switch>
             <AppBar className={classes.appbar}>
               <BottomNavigation className={classes.root}>
@@ -65,24 +61,11 @@ export default function App() {
                   to="/text"
                   icon={<Chat />}
                 />
-                <BottomNavigationAction
-                  component={Link}
-                  to="/dash"
-                  icon={<Settings />}
-                />
               </BottomNavigation>
             </AppBar>
           </Router>
         </Box>
       </Container>
     </>
-  );
-}
-
-function Dash() {
-  return (
-    <div>
-      <h2>Dash</h2>
-    </div>
   );
 }
