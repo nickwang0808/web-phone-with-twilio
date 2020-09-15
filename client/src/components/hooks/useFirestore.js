@@ -38,24 +38,17 @@ export function useFireStoreAllDocs(collection) {
         };
         previewData.push(data);
       });
-
-      function sort(a, b) {
-        return b.timeStamp.toDate() - a.timeStamp.toDate();
-      }
-      previewData.sort(sort);
-
+      previewData.sort((a, b) => b.timeStamp.toDate() - a.timeStamp.toDate());
       setMessages(previewData);
       // console.log(previewData);
     });
-
     return () => unsub();
   }, [collection]);
 
   return { messages };
 }
-
+// ===============================================================
 export function FireStoreUpdateReadStatus(collection, docID) {
-  // update the provided message
   const docRef = db.collection(collection).doc(docID);
 
   return docRef

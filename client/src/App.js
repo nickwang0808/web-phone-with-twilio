@@ -11,6 +11,7 @@ import {
 import RestoreIcon from "@material-ui/icons/Restore";
 import VoiceApp from "./components/voiceapp";
 import SmsApp from "./components/smsApp";
+import { Phone, Chat, Settings } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,17 +58,17 @@ export default function App() {
                 <BottomNavigationAction
                   component={Link}
                   to="/"
-                  icon={<RestoreIcon />}
+                  icon={<Phone />}
                 />
                 <BottomNavigationAction
                   component={Link}
                   to="/text"
-                  icon={<RestoreIcon />}
+                  icon={<Chat />}
                 />
                 <BottomNavigationAction
                   component={Link}
                   to="/dash"
-                  icon={<RestoreIcon />}
+                  icon={<Settings />}
                 />
               </BottomNavigation>
             </AppBar>
