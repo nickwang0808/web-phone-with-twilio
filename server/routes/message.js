@@ -7,18 +7,33 @@ dotenv.config();
 
 const router = express.Router();
 
-async function addMessageToDB(db, content, isIncoming, doc) {
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = require("twilio")(accountSid, authToken);
+
+async function addMessageToDB(db, content, isIncoming, docID) {
+  const messageDetailObj = {
+    incoming: isIncoming,
+    From: content.body.From,
+    To: content.body.To,
+    messageBody: content.body.messageBody,
+    timeStamp: new Date(),
+  };
   try {
-    const docRef = db.collection("messages").doc(doc);
-    await docRef.update({
-      message: arrayUnion({
-        incoming: isIncoming,
-        From: content.body.From,
-        To: content.body.To,
-        messageBody: content.body.Body,
-        timeStamp: new Date(),
-      }),
-    });
+    const doc = await db.collection("messages").doc(docID).get();
+    if (doc && doc.exists) {
+      await doc.ref.update({
+        isRead: isIncoming ? false : true,
+        message: arrayUnion(messageDetailObj),
+      });
+    } else {
+      // if doc does NOT exist, create one
+      await doc.ref.set({
+        from: content.body.From,
+        isRead: isIncoming ? false : true,
+        message: [messageDetailObj],
+      });
+    }
   } catch (err) {
     console.log(err);
   }
@@ -26,13 +41,9 @@ async function addMessageToDB(db, content, isIncoming, doc) {
 
 router.post("/sms", (req, res) => {
   addMessageToDB(db, req, true, req.body.From);
-  console.log(req.body.Body);
+  console.log({ header: req.header, body: req.body });
   res.sendStatus(200);
 });
-
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-const client = require("twilio")(accountSid, authToken);
 
 // clean this up a bit to mimic the twilio http req
 router.post("/send", (req, res) => {
@@ -50,7 +61,13 @@ router.post("/send", (req, res) => {
       .then(res.sendStatus(200))
       .catch((err) => console.log(err));
   } catch (err) {
-    console.log({ err: err, req: req });
+    console.log({
+      err: err,
+      req: {
+        header: req.header,
+        body: req.body,
+      },
+    });
   }
 });
 

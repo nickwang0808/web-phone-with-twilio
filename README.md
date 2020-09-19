@@ -28,7 +28,11 @@
 - ~~add Device init process~~
 - ~~cleaned up error handler~~
 - ~~add react router~~
-- add texting
+- ~~add texting~~
+- implement redux
 - add number validation
 - add incoming call notification
+- add incoming sms notification
 - add fetch retry during init process
+
+#### Notes:

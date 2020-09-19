@@ -8,26 +8,25 @@ import {
   AppBar,
   makeStyles,
 } from "@material-ui/core";
-import RestoreIcon from "@material-ui/icons/Restore";
-// eslint-disable-next-line
 import VoiceApp from "./components/voiceapp";
-import SmsApp from "./components/smsapp";
+import SmsApp from "./components/smsApp";
+import { Phone, Chat } from "@material-ui/icons";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   root: {
     backgroundColor: "#e6e6e6",
   },
   appbar: {
     top: "auto",
     bottom: "0",
-    maxWidth: "396px",
+    maxWidth: "480px",
     // these 3 did the trick to center the app bar
     left: "0",
     right: "0",
     margin: "0px auto",
     // ^
   },
-}));
+});
 
 export default function App() {
   const classes = useStyles();
@@ -49,26 +48,18 @@ export default function App() {
               <Route exact path="/text">
                 <SmsApp />
               </Route>
-              <Route exact path="/dash">
-                <Dash />
-              </Route>
             </Switch>
             <AppBar className={classes.appbar}>
               <BottomNavigation className={classes.root}>
                 <BottomNavigationAction
                   component={Link}
                   to="/"
-                  icon={<RestoreIcon />}
+                  icon={<Phone />}
                 />
                 <BottomNavigationAction
                   component={Link}
                   to="/text"
-                  icon={<RestoreIcon />}
-                />
-                <BottomNavigationAction
-                  component={Link}
-                  to="/dash"
-                  icon={<RestoreIcon />}
+                  icon={<Chat />}
                 />
               </BottomNavigation>
             </AppBar>
@@ -76,13 +67,5 @@ export default function App() {
         </Box>
       </Container>
     </>
-  );
-}
-
-function Dash() {
-  return (
-    <div>
-      <h2>Dash</h2>
-    </div>
   );
 }

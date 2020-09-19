@@ -24,3 +24,4 @@ yarn-error.log*
 
 server/autodialer-285913-0d8eb486fa4d.json
 server/autodialer-285913-firebase-adminsdk-vk2kb-a26ac625f7.json
+client/src/firebase/secrets.js
