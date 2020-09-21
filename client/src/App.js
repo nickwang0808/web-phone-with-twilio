@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import {
   BottomNavigation,
@@ -8,9 +8,10 @@ import {
   AppBar,
   makeStyles,
 } from "@material-ui/core";
-import VoiceApp from "./components/voiceapp";
-import SmsApp from "./components/smsApp";
+import VoiceApp from "./components/voicecomp/voiceapp";
+import SmsApp from "./components/smscomp/smsApp";
 import { Phone, Chat } from "@material-ui/icons";
+import { useFireStoreAllDocs } from "./components/hooks/useFirestore";
 
 const useStyles = makeStyles({
   root: {
@@ -30,6 +31,20 @@ const useStyles = makeStyles({
 
 export default function App() {
   const classes = useStyles();
+
+  const { messages } = useFireStoreAllDocs("messages");
+
+  // useEffect(() => {
+  //   async function fetchFBC() {
+  //     const url =
+  //       "https://us-central1-autodialer-285913.cloudfunctions.net/helloorld";
+  //     const res = await fetch(url);
+  //     console.log(res);
+  //   }
+
+  //   fetchFBC();
+  // });
+
   return (
     <>
       <Container maxWidth="xs" disableGutters>
@@ -46,7 +61,7 @@ export default function App() {
                 <VoiceApp />
               </Route>
               <Route exact path="/text">
-                <SmsApp />
+                <SmsApp messages={messages} />
               </Route>
             </Switch>
             <AppBar className={classes.appbar}>
