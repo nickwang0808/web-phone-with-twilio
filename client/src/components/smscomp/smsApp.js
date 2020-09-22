@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import SmsDetail from "./smsdetail";
 import { Box } from "@material-ui/core";
-import { useFireStoreAllDocs } from "../hooks/useFirestore";
 import List from "@material-ui/core/List";
 import SmsPreview from "./smspreview";
 

@@ -31,6 +31,7 @@
 - ~~add texting~~
 - ~~migrate to firebase function~~
   - ~~more code clean up.~~
+- lift state to global
 - implement redux
 - add number validation
 - add incoming call notification
