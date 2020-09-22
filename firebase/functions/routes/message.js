@@ -1,14 +1,12 @@
 const express = require("express");
-const db = require("../config").db;
-const arrayUnion = require("../config").arrayUnion;
-
-const dotenv = require("dotenv");
-dotenv.config();
+const db = require("../index").db;
+const arrayUnion = require("../index").arrayUnion;
+const secrets = require("../secrets");
 
 const router = express.Router();
 
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
+const accountSid = secrets.TWILIO_ACCOUNT_SID;
+const authToken = secrets.TWILIO_AUTH_TOKEN;
 const client = require("twilio")(accountSid, authToken);
 
 async function addMessageToDB(db, content, isIncoming, docID) {
@@ -16,7 +14,7 @@ async function addMessageToDB(db, content, isIncoming, docID) {
     incoming: isIncoming,
     From: content.body.From,
     To: content.body.To,
-    messageBody: content.body.messageBody,
+    messageBody: content.body.Body,
     timeStamp: new Date(),
   };
   try {
@@ -34,18 +32,18 @@ async function addMessageToDB(db, content, isIncoming, docID) {
         message: [messageDetailObj],
       });
     }
+    // console.log("datebase update successful");
   } catch (err) {
     console.log(err);
   }
 }
 
-router.post("/sms", (req, res) => {
+router.post("/receive", (req, res) => {
+  // console.log({ header: req.header, body: req.body });
   addMessageToDB(db, req, true, req.body.From);
-  console.log({ header: req.header, body: req.body });
-  res.sendStatus(200);
+  res.status(200).end();
 });
 
-// clean this up a bit to mimic the twilio http req
 router.post("/send", (req, res) => {
   try {
     client.messages
@@ -55,8 +53,9 @@ router.post("/send", (req, res) => {
         to: req.body.To,
       })
       .then((message) => {
-        console.log(message.sid);
+        // console.log(message.sid);
         addMessageToDB(db, req, false, req.body.To);
+        return null;
       })
       .then(res.sendStatus(200))
       .catch((err) => console.log(err));

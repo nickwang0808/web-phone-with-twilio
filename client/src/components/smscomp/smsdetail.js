@@ -7,11 +7,11 @@ import {
   IconButton,
 } from "@material-ui/core";
 import { Send } from "@material-ui/icons";
-import FromBar from "./smscomp/fromBar";
+import FromBar from "./fromBar";
 import {
   useFireStoreOneDoc,
   FireStoreUpdateReadStatus,
-} from "./hooks/useFirestore";
+} from "../hooks/useFirestore";
 import { grey } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
@@ -68,7 +68,7 @@ export default function SmsDetail({ numToView, setNumToView }) {
 
   useEffect(() => {
     isRead === false && FireStoreUpdateReadStatus("messages", numToView);
-    console.log(isRead === false);
+    // console.log(isRead === false);
   }, [isRead, numToView]);
 
   const handleSendMessage = async () => {

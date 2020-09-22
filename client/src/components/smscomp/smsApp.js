@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import SmsDetail from "./smsdetail";
 import { Box } from "@material-ui/core";
-import { useFireStoreAllDocs } from "./hooks/useFirestore";
+import { useFireStoreAllDocs } from "../hooks/useFirestore";
 import List from "@material-ui/core/List";
-import SmsPreview from "./smscomp/smspreview";
+import SmsPreview from "./smspreview";
 
-export default function SmsApp() {
-  const { messages } = useFireStoreAllDocs("messages");
+export default function SmsApp({ messages }) {
   const [numToView, setNumToView] = useState(null);
 
   if (!numToView) {

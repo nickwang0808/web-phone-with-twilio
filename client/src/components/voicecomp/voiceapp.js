@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useReducer } from "react";
 
 import { Box, Grid, CircularProgress } from "@material-ui/core";
-import NumberBox from "./voicecomp/numberBox";
-import KeyPad from "./voicecomp/keypad";
+import NumberBox from "./numberBox";
+import KeyPad from "./keypad";
 const { Device } = require("twilio-client");
 
 // when in DEVMODE no fetch call will be made
@@ -26,13 +26,13 @@ function reducer(state, action) {
 }
 
 function VoiceApp() {
+  const [state, dispatch] = useReducer(reducer, { number: "+" });
+
   const [deviceReady, setDeviceReady] = useState(false);
   const [initError, setInitError] = useState(false);
   const [error, setError] = useState(null);
   const [connection, setConnection] = useState(false);
   const [incoming, setIncoming] = useState(false);
-
-  const [state, dispatch] = useReducer(reducer, { number: "+" });
 
   const handleHangUp = () => {
     Device.disconnectAll();
@@ -51,7 +51,8 @@ function VoiceApp() {
   const getToken = async () => {
     try {
       // const url = "http://localhost:3000/token/generate";
-      const url = "http://35.220.218.52:3000/token/generate";
+      const url =
+        "https://us-central1-autodialer-285913.cloudfunctions.net/api/token";
       const response = await fetch(url, {
         method: "POST",
       }).then((body) => body.json());
@@ -79,6 +80,7 @@ function VoiceApp() {
       Device.on("ready", () => {
         console.log("device ready");
         setDeviceReady(true);
+        error === null && setError(null);
       });
     }
 

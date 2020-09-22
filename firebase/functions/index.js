@@ -1,11 +1,11 @@
+const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const serviceAccount = require("./autodialer-285913-firebase-adminsdk-vk2kb-a26ac625f7.json");
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://autodialer-285913.firebaseio.com",
-});
-
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL: "https://autodialer-285913.firebaseio.com",
+// });
+admin.initializeApp();
 const db = admin.firestore();
 const timeStamp = admin.firestore.FieldValue.serverTimestamp;
 const arrayUnion = admin.firestore.FieldValue.arrayUnion;
@@ -13,3 +13,7 @@ const arrayUnion = admin.firestore.FieldValue.arrayUnion;
 module.exports.db = db;
 module.exports.timeStamp = timeStamp;
 module.exports.arrayUnion = arrayUnion;
+
+const api = require("./api");
+
+exports.api = functions.https.onRequest(api);
