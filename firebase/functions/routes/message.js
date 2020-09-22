@@ -10,17 +10,15 @@ const authToken = secrets.TWILIO_AUTH_TOKEN;
 const client = require("twilio")(accountSid, authToken);
 
 async function addMessageToDB(db, content, isIncoming, docID) {
-  console.log("addmessagetoDb");
   const messageDetailObj = {
     incoming: isIncoming,
     From: content.body.From,
     To: content.body.To,
-    messageBody: content.body.messageBody,
+    messageBody: content.body.Body,
     timeStamp: new Date(),
   };
   try {
     const doc = await db.collection("messages").doc(docID).get();
-    console.log(doc);
     if (doc && doc.exists) {
       await doc.ref.update({
         isRead: isIncoming ? false : true,
@@ -34,15 +32,14 @@ async function addMessageToDB(db, content, isIncoming, docID) {
         message: [messageDetailObj],
       });
     }
+    // console.log("datebase update successful");
   } catch (err) {
     console.log(err);
-  } finally {
-    console.log("datebase update successful");
   }
 }
 
 router.post("/receive", (req, res) => {
-  console.log({ header: req.header, body: req.body });
+  // console.log({ header: req.header, body: req.body });
   addMessageToDB(db, req, true, req.body.From);
   res.status(200).end();
 });
@@ -56,8 +53,9 @@ router.post("/send", (req, res) => {
         to: req.body.To,
       })
       .then((message) => {
-        console.log(message.sid);
+        // console.log(message.sid);
         addMessageToDB(db, req, false, req.body.To);
+        return null;
       })
       .then(res.sendStatus(200))
       .catch((err) => console.log(err));

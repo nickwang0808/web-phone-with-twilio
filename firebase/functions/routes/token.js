@@ -31,7 +31,7 @@ router.post("/", (req, res) => {
 
   // Serialize the token to a JWT string
   // console.log(token);
-  token && console.log("-----token sent-----");
+  // token && console.log("-----token sent-----");
   res.append("Content-Type", "application/json");
   res.json({
     identity: identity,

@@ -29,7 +29,8 @@
 - ~~cleaned up error handler~~
 - ~~add react router~~
 - ~~add texting~~
-- migrate to firebase function
+- ~~migrate to firebase function~~
+  - ~~more code clean up.~~
 - implement redux
 - add number validation
 - add incoming call notification

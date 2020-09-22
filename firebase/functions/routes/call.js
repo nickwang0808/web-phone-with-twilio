@@ -10,7 +10,7 @@ router.post("/connect", (req, res) => {
   let voiceResponse = new VoiceResponse();
   voiceResponse.dial({ callerId: mynumber }, req.body.number);
   res.type("text/xml");
-  console.log("voiceResponse: ", voiceResponse);
+  // console.log("voiceResponse: ", voiceResponse);
   res.send(voiceResponse.toString());
 });
 

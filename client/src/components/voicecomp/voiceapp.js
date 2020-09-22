@@ -52,7 +52,7 @@ function VoiceApp() {
     try {
       // const url = "http://localhost:3000/token/generate";
       const url =
-        "http://localhost:5001/autodialer-285913/us-central1/api/token";
+        "https://us-central1-autodialer-285913.cloudfunctions.net/api/token";
       const response = await fetch(url, {
         method: "POST",
       }).then((body) => body.json());

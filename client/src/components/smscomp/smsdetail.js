@@ -68,7 +68,7 @@ export default function SmsDetail({ numToView, setNumToView }) {
 
   useEffect(() => {
     isRead === false && FireStoreUpdateReadStatus("messages", numToView);
-    console.log(isRead === false);
+    // console.log(isRead === false);
   }, [isRead, numToView]);
 
   const handleSendMessage = async () => {
