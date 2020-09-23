@@ -3,14 +3,24 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { CssBaseline, ThemeProvider } from "@material-ui/core";
+import { Box, Container, CssBaseline, ThemeProvider } from "@material-ui/core";
 import theme from "./theme";
 
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <App />
+      <Container maxWidth="xs" disableGutters>
+        <Box
+          height={window.innerHeight + "px"}
+          display="flex"
+          flexDirection="column"
+          justifyContent="space-between"
+          pb={7}
+        >
+          <App />
+        </Box>
+      </Container>
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById("root")

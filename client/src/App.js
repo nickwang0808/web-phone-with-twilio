@@ -1,17 +1,18 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import {
   BottomNavigation,
   BottomNavigationAction,
   Box,
-  Container,
   AppBar,
   makeStyles,
+  CircularProgress,
 } from "@material-ui/core";
 import VoiceApp from "./components/voicecomp/voiceapp";
 import SmsApp from "./components/smscomp/smsApp";
 import { Phone, Chat } from "@material-ui/icons";
 import { useFireStoreAllDocs } from "./components/hooks/useFirestore";
+import useVoiceInit from "./components/hooks/useVoiceInit";
 
 const useStyles = makeStyles({
   root: {
@@ -29,58 +30,78 @@ const useStyles = makeStyles({
   },
 });
 
+const DEVMODE = true;
+
 export default function App() {
   const classes = useStyles();
 
   const { messages } = useFireStoreAllDocs("messages");
 
-  // useEffect(() => {
-  //   async function fetchFBC() {
-  //     const url =
-  //       "https://us-central1-autodialer-285913.cloudfunctions.net/helloorld";
-  //     const res = await fetch(url);
-  //     console.log(res);
-  //   }
+  const { deviceReady, initError, connectionError, incoming } = useVoiceInit(
+    DEVMODE
+  );
 
-  //   fetchFBC();
-  // });
-
-  return (
-    <>
-      <Container maxWidth="xs" disableGutters>
+  if (!deviceReady) {
+    return (
+      <>
         <Box
-          height={window.innerHeight + "px"}
+          flexGrow="1"
           display="flex"
           flexDirection="column"
-          justifyContent="space-between"
-          pb={7}
+          justifyContent="center"
+          pb={4}
+          pt={2}
         >
-          <Router>
-            <Switch>
-              <Route exact path="/">
-                <VoiceApp />
-              </Route>
-              <Route exact path="/text">
-                <SmsApp messages={messages} />
-              </Route>
-            </Switch>
-            <AppBar className={classes.appbar}>
-              <BottomNavigation className={classes.root}>
-                <BottomNavigationAction
-                  component={Link}
-                  to="/"
-                  icon={<Phone />}
-                />
-                <BottomNavigationAction
-                  component={Link}
-                  to="/text"
-                  icon={<Chat />}
-                />
-              </BottomNavigation>
-            </AppBar>
-          </Router>
+          {initError ? (
+            <Box textAlign="center">
+              <h4>
+                Failed to connect to server, check yor internet and refresh the
+                page
+              </h4>
+            </Box>
+          ) : (
+            <Box textAlign="center">
+              <h4>Initializing Device, This could take a few sec</h4>
+              <CircularProgress />
+            </Box>
+          )}
         </Box>
-      </Container>
-    </>
-  );
+      </>
+    );
+  } else {
+    return (
+      <>
+        <Router>
+          <Switch>
+            <Route exact path="/">
+              <VoiceApp
+                deviceReady={deviceReady}
+                initError={initError}
+                connectionError={connectionError}
+                incoming={incoming}
+                DEVMODE={DEVMODE}
+              />
+            </Route>
+            <Route exact path="/text">
+              <SmsApp messages={messages} />
+            </Route>
+          </Switch>
+          <AppBar className={classes.appbar}>
+            <BottomNavigation className={classes.root}>
+              <BottomNavigationAction
+                component={Link}
+                to="/"
+                icon={<Phone />}
+              />
+              <BottomNavigationAction
+                component={Link}
+                to="/text"
+                icon={<Chat />}
+              />
+            </BottomNavigation>
+          </AppBar>
+        </Router>
+      </>
+    );
+  }
 }
