@@ -31,11 +31,12 @@
 - ~~add texting~~
 - ~~migrate to firebase function~~
   - ~~more code clean up.~~
-- lift state to global
-- implement redux
-- add number validation
+- ~~lift state to global~~
 - add incoming call notification
 - add incoming sms notification
 - add fetch retry during init process
+- implement redux
+- add firbase auth
+- add number validation
 
 #### Notes:

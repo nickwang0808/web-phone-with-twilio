@@ -43,7 +43,7 @@ export default function useVoiceInit(DEVMODE) {
     return () => {
       Device.destroy();
     };
-  }, [deviceReady, connectionError]);
+  }, [deviceReady, connectionError, DEVMODE]);
 
   useEffect(() => {
     Device.on("error", (error) => {

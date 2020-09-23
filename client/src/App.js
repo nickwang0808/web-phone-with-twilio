@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import {
   BottomNavigation,
@@ -7,12 +7,14 @@ import {
   AppBar,
   makeStyles,
   CircularProgress,
+  Container,
 } from "@material-ui/core";
 import VoiceApp from "./components/voicecomp/voiceapp";
 import SmsApp from "./components/smscomp/smsApp";
 import { Phone, Chat } from "@material-ui/icons";
 import { useFireStoreAllDocs } from "./components/hooks/useFirestore";
 import useVoiceInit from "./components/hooks/useVoiceInit";
+import IncomingPopup from "./components/voicecomp/incomingPopup";
 
 const useStyles = makeStyles({
   root: {
@@ -31,9 +33,11 @@ const useStyles = makeStyles({
 });
 
 const DEVMODE = true;
+// const TESTCOMP = true;
 
 export default function App() {
   const classes = useStyles();
+  const [displayIncoming, setDisplayIncoming] = useState(false);
 
   const { messages } = useFireStoreAllDocs("messages");
 
@@ -71,36 +75,53 @@ export default function App() {
   } else {
     return (
       <>
-        <Router>
-          <Switch>
-            <Route exact path="/">
-              <VoiceApp
-                deviceReady={deviceReady}
-                initError={initError}
-                connectionError={connectionError}
-                incoming={incoming}
-                DEVMODE={DEVMODE}
-              />
-            </Route>
-            <Route exact path="/text">
-              <SmsApp messages={messages} />
-            </Route>
-          </Switch>
-          <AppBar className={classes.appbar}>
-            <BottomNavigation className={classes.root}>
-              <BottomNavigationAction
-                component={Link}
-                to="/"
-                icon={<Phone />}
-              />
-              <BottomNavigationAction
-                component={Link}
-                to="/text"
-                icon={<Chat />}
-              />
-            </BottomNavigation>
-          </AppBar>
-        </Router>
+        <IncomingPopup display={displayIncoming} />
+
+        <Container maxWidth="xs" disableGutters>
+          <Box
+            height={window.innerHeight + "px"}
+            display="flex"
+            flexDirection="column"
+            justifyContent="space-between"
+            pb={7}
+          >
+            <Router>
+              <Switch>
+                <Route exact path="/">
+                  <VoiceApp
+                    deviceReady={deviceReady}
+                    initError={initError}
+                    connectionError={connectionError}
+                    incoming={incoming}
+                    DEVMODE={DEVMODE}
+                  />
+                </Route>
+                <Route exact path="/text">
+                  <SmsApp messages={messages} />
+                </Route>
+              </Switch>
+              <AppBar className={classes.appbar}>
+                <BottomNavigation className={classes.root}>
+                  <BottomNavigationAction
+                    component={Link}
+                    to="/"
+                    icon={<Phone />}
+                  />
+                  <BottomNavigationAction
+                    component={Link}
+                    to="/text"
+                    icon={<Chat />}
+                  />
+                </BottomNavigation>
+              </AppBar>
+              <button
+                onClick={() => setDisplayIncoming((prevState) => !prevState)}
+              >
+                incoming
+              </button>
+            </Router>
+          </Box>
+        </Container>
       </>
     );
   }
