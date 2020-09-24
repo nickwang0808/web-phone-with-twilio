@@ -76,11 +76,14 @@ export default function App() {
   } else {
     AppUI = (
       <>
-        <IncomingPopup
+        {/* <IncomingPopup
           display={displayIncoming}
           setDisplayIncoming={setDisplayIncoming}
+        /> */}
+        <IncomingPopup
+          display={incoming}
+          setDisplayIncoming={setDisplayIncoming}
         />
-        {/* <IncomingPopup display={incoming} /> */}
 
         <Router>
           <Switch>
@@ -112,9 +115,9 @@ export default function App() {
               />
             </BottomNavigation>
           </AppBar>
-          <button onClick={() => setDisplayIncoming((prevState) => !prevState)}>
+          {/* <button onClick={() => setDisplayIncoming((prevState) => !prevState)}>
             incoming
-          </button>
+          </button> */}
         </Router>
       </>
     );

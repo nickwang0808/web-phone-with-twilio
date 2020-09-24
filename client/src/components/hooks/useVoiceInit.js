@@ -44,6 +44,8 @@ export default function useVoiceInit(DEVMODE) {
       console.log("error log", error);
       setConnectionError(`An Error occurred, error code: ${error.code}`);
       setDeviceReady(false);
+      sessionStorage.clear();
+      deviceSetup();
     });
 
     // eslint-disable-next-line

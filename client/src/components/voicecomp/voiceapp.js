@@ -44,7 +44,7 @@ function VoiceApp({
   }, []);
 
   const handleMakeCall = () => {
-    const params = { number: state.number };
+    const params = { phoneNumber: state.number };
 
     // const params = { number: number };
     Device.connect(params);

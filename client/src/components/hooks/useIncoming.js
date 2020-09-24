@@ -7,6 +7,7 @@ export default function useIncoming() {
 
   useEffect(() => {
     Device.on("incoming", (conn) => {
+      console.log("incoming");
       setIncoming(true);
       setIncomingConnection(conn);
     });
