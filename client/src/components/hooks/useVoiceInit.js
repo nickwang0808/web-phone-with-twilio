@@ -5,20 +5,23 @@ export default function useVoiceInit(DEVMODE) {
   const [deviceReady, setDeviceReady] = useState(false);
   const [initError, setInitError] = useState(false);
   const [connectionError, setConnectionError] = useState(null);
-  const [incoming, setIncoming] = useState(false);
 
-  const getToken = async () => {
+  const deviceSetup = async () => {
     try {
-      // const url = "http://localhost:3000/token/generate";
-      const url =
-        "https://us-central1-autodialer-285913.cloudfunctions.net/api/token";
-      const response = await fetch(url, {
-        method: "POST",
-      }).then((body) => body.json());
-
-      // console.log(response.token);
-      console.log("token received");
-      Device.setup(response.token);
+      // check if token is stored
+      if (sessionStorage.getItem("token")) {
+        const token = sessionStorage.getItem("token");
+        Device.setup(token);
+      } else {
+        const url =
+          "https://us-central1-autodialer-285913.cloudfunctions.net/api/token";
+        let response = await fetch(url, {
+          method: "POST",
+        }).then((body) => body.json());
+        sessionStorage.setItem("token", response.token);
+        console.log("token received");
+        Device.setup(response.token);
+      }
     } catch (err) {
       console.log(err);
       setInitError(true);
@@ -26,39 +29,24 @@ export default function useVoiceInit(DEVMODE) {
   };
 
   useEffect(() => {
-    // device init
-    if (DEVMODE) {
-      setDeviceReady(true);
-    } else {
-      if (!deviceReady) {
-        getToken();
-        Device.on("ready", () => {
-          console.log("device ready");
-          setDeviceReady(true);
-          connectionError === null && setConnectionError(null);
-        });
-      }
-    }
-
-    return () => {
-      Device.destroy();
-    };
-  }, [deviceReady, connectionError, DEVMODE]);
+    deviceSetup();
+  }, [deviceReady]);
 
   useEffect(() => {
+    Device.on("ready", () => {
+      console.log("device ready");
+      setDeviceReady(true);
+      setConnectionError(null);
+      setInitError(null);
+    });
+
     Device.on("error", (error) => {
       console.log("error log", error);
       setConnectionError(`An Error occurred, error code: ${error.code}`);
       setDeviceReady(false);
     });
 
-    // Device.on("disconnect", () => setConnection(false));
-
-    Device.on("incoming", (conn) => {
-      setIncoming(true);
-      console.log(conn);
-    });
-
+    // eslint-disable-next-line
     return () => {
       Device.destroy();
     };
@@ -68,6 +56,5 @@ export default function useVoiceInit(DEVMODE) {
     deviceReady,
     initError,
     connectionError,
-    incoming,
   };
 }

@@ -24,7 +24,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function IncomingPopup({ display }) {
+export default function IncomingPopup({ display, setDisplayIncoming }) {
   const classes = useStyles();
 
   return (
@@ -41,11 +41,17 @@ export default function IncomingPopup({ display }) {
             </ListItem>
             <Divider variant="inset" />
             <Box display="flex" justifyContent="space-around">
-              <Button style={{ color: "green" }}>
+              <Button
+                style={{ color: "green" }}
+                onClick={() => setDisplayIncoming(false)}
+              >
                 <Phone style={{ marginRight: "8px" }} />
                 Accept
               </Button>
-              <Button style={{ color: "red" }}>
+              <Button
+                style={{ color: "red" }}
+                onClick={() => setDisplayIncoming(false)}
+              >
                 <Clear style={{ marginRight: "8px" }} />
                 Reject
               </Button>

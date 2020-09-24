@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Grid, Box, makeStyles } from "@material-ui/core";
-import CallButton from "./callButton";
+import { CallButton } from "./callButton";
 
 const useStyles = makeStyles((theme) => ({
   root: {

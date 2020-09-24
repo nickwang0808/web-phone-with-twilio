@@ -15,6 +15,7 @@ import { Phone, Chat } from "@material-ui/icons";
 import { useFireStoreAllDocs } from "./components/hooks/useFirestore";
 import useVoiceInit from "./components/hooks/useVoiceInit";
 import IncomingPopup from "./components/voicecomp/incomingPopup";
+import useIncoming from "./components/hooks/useIncoming";
 
 const useStyles = makeStyles({
   root: {
@@ -32,7 +33,7 @@ const useStyles = makeStyles({
   },
 });
 
-const DEVMODE = true;
+const DEVMODE = false;
 // const TESTCOMP = true;
 
 export default function App() {
@@ -41,12 +42,12 @@ export default function App() {
 
   const { messages } = useFireStoreAllDocs("messages");
 
-  const { deviceReady, initError, connectionError, incoming } = useVoiceInit(
-    DEVMODE
-  );
+  const { deviceReady, initError, connectionError } = useVoiceInit(DEVMODE);
+  const { incoming, setIncoming, incomingConnection } = useIncoming();
 
+  let AppUI;
   if (!deviceReady) {
-    return (
+    AppUI = (
       <>
         <Box
           flexGrow="1"
@@ -73,56 +74,65 @@ export default function App() {
       </>
     );
   } else {
-    return (
+    AppUI = (
       <>
-        <IncomingPopup display={displayIncoming} />
+        <IncomingPopup
+          display={displayIncoming}
+          setDisplayIncoming={setDisplayIncoming}
+        />
+        {/* <IncomingPopup display={incoming} /> */}
 
-        <Container maxWidth="xs" disableGutters>
-          <Box
-            height={window.innerHeight + "px"}
-            display="flex"
-            flexDirection="column"
-            justifyContent="space-between"
-            pb={7}
-          >
-            <Router>
-              <Switch>
-                <Route exact path="/">
-                  <VoiceApp
-                    deviceReady={deviceReady}
-                    initError={initError}
-                    connectionError={connectionError}
-                    incoming={incoming}
-                    DEVMODE={DEVMODE}
-                  />
-                </Route>
-                <Route exact path="/text">
-                  <SmsApp messages={messages} />
-                </Route>
-              </Switch>
-              <AppBar className={classes.appbar}>
-                <BottomNavigation className={classes.root}>
-                  <BottomNavigationAction
-                    component={Link}
-                    to="/"
-                    icon={<Phone />}
-                  />
-                  <BottomNavigationAction
-                    component={Link}
-                    to="/text"
-                    icon={<Chat />}
-                  />
-                </BottomNavigation>
-              </AppBar>
-              <button
-                onClick={() => setDisplayIncoming((prevState) => !prevState)}
-              >
-                incoming
-              </button>
-            </Router>
-          </Box>
-        </Container>
+        <Router>
+          <Switch>
+            <Route exact path="/">
+              <VoiceApp
+                deviceReady={deviceReady}
+                initError={initError}
+                connectionError={connectionError}
+                incoming={incoming}
+                DEVMODE={DEVMODE}
+                incomingConnection={incomingConnection}
+              />
+            </Route>
+            <Route exact path="/text">
+              <SmsApp messages={messages} />
+            </Route>
+          </Switch>
+          <AppBar className={classes.appbar}>
+            <BottomNavigation className={classes.root}>
+              <BottomNavigationAction
+                component={Link}
+                to="/"
+                icon={<Phone />}
+              />
+              <BottomNavigationAction
+                component={Link}
+                to="/text"
+                icon={<Chat />}
+              />
+            </BottomNavigation>
+          </AppBar>
+          <button onClick={() => setDisplayIncoming((prevState) => !prevState)}>
+            incoming
+          </button>
+        </Router>
       </>
     );
   }
+
+  return (
+    <>
+      <Container maxWidth="xs" disableGutters>
+        <Box
+          height={window.innerHeight + "px"}
+          display="flex"
+          flexDirection="column"
+          justifyContent="space-between"
+          pb={7}
+        >
+          {AppUI}
+        </Box>
+      </Container>
+    </>
+  );
 }

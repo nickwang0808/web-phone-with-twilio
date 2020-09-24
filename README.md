@@ -33,6 +33,7 @@
   - ~~more code clean up.~~
 - ~~lift state to global~~
 - add incoming call notification
+- cache voice token to reactjs
 - add incoming sms notification
 - add fetch retry during init process
 - implement redux
@@ -40,3 +41,5 @@
 - add number validation
 
 #### Notes:
+
+for what ever reason, props are not being passed into <ActiveCall> comp

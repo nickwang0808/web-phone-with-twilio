@@ -22,25 +22,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function CallButton({ handleMakeCall, handleHangUp, connection }) {
+export function CallButton({ handleMakeCall }) {
   const classes = useStyles();
 
   return (
     <IconButton
       // disabled={deviceReady ? false : true}
-      classes={
-        connection
-          ? { root: classes.hangUp }
-          : {
-              disabled: classes.disabled,
-              root: classes.root,
-            }
-      }
-      onClick={connection ? handleHangUp : handleMakeCall}
+      classes={{
+        root: classes.root,
+      }}
+      onClick={handleMakeCall}
     >
       <Phone fontSize="large" style={{ color: grey[50] }} />
     </IconButton>
   );
 }
 
-export default CallButton;
+export function HangUpButton({ handleHangUp }) {
+  const classes = useStyles();
+
+  return (
+    <IconButton
+      // disabled={deviceReady ? false : true}
+      classes={{ root: classes.hangUp }}
+      onClick={handleHangUp}
+    >
+      <Phone fontSize="large" style={{ color: grey[50] }} />
+    </IconButton>
+  );
+}
